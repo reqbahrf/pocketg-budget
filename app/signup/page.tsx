@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { RiEyeLine, RiEyeCloseLine } from '@remixicon/react';
-import Input from '@/app/components/Input/Input';
+import Input from '@/components/Input/Input';
 
 export default function SignUp() {
   const [formData, setFormData] = useState({

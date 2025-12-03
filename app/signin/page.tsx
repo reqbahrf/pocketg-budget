@@ -1,10 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { RiEyeLine, RiEyeCloseLine } from '@remixicon/react';
-import Input from '@/app/components/Input/Input';
+import Input from '@/components/Input/Input';
 
 export default function Login() {
+  const router = useRouter();
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
@@ -19,7 +21,8 @@ export default function Login() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Login attempt:', { credentials });
-    // In a real app, you would handle authentication here
+    // Test implementation
+    router.push('/dashboard');
   };
 
   const togglePasswordVisibility = () => {

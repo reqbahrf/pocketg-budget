@@ -1,8 +1,16 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+}
+
+@theme {
+  /* Define a new color variable namespace called 'brand' */
+  --color-brand-dark: #102215;
+  --color-brand-light: #ecfdf5;
+
+  --color-primary: light-dark(#102215, #ecfdf5);
 }
 
 @theme inline {
@@ -14,7 +22,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #102215;
     --foreground: #ededed;
   }
 }

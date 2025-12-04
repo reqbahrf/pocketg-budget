@@ -31,7 +31,7 @@ export default function Login() {
 
   return (
     <div className='flex items-center justify-center min-h-screen p-4'>
-      <div className='w-full max-w-md p-8 space-y-6 bg-white dark:bg-gray-800 rounded-xl shadow-2xl'>
+      <div className='w-full max-w-md p-8 space-y-6 bg-second-dark shadow-2xl border border-gray-600 rounded-2xl'>
         <h1 className='text-3xl font-bold text-center text-gray-900 dark:text-white'>
           Sign In
         </h1>
@@ -96,7 +96,7 @@ export default function Login() {
           <div>
             <button
               type='submit'
-              className='w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+              className='w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-black bg-brand-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
             >
               Sign in
             </button>

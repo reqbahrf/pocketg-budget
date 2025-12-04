@@ -50,7 +50,7 @@ export default function DonutChart({
     [chartData]
   );
   return (
-    <div className='md:w-1/2 w-full bg-[#1c2d20] border border-gray-600 rounded-2xl px-4 py-4'>
+    <div className='md:w-1/2 w-full bg-second-dark border border-gray-600 rounded-2xl px-4 py-4'>
       <div className='text-sm mb-1 font-normal'>Spending by Category</div>
       <Chart
         options={option}

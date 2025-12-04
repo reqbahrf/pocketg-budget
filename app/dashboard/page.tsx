@@ -1,6 +1,14 @@
 'use client';
 import OverviewCard from './_components/OverviewCard';
+import {
+  RiSparklingFill,
+  RiAddLine,
+  RiReceiptFill,
+  RiBarChart2Fill,
+} from '@remixicon/react';
 import dynamic from 'next/dynamic';
+import { ReactNode } from 'react';
+import RecentActivityCard from './_components/RecentActivityCard';
 const AreaChart = dynamic(() => import('./_components/AreaChart'), {
   ssr: false,
 });
@@ -137,7 +145,63 @@ export default function Dashboard() {
           {...exampleDonutData}
           theme='dark'
         />
-      </div>
+      </section>
+      {/* AI Insight Section */}
+      <section className='mt-12 mb-8'>
+        <div className='w-full bg-second-dark border border-gray-600 rounded-2xl px-4 py-4'>
+          <div className='flex items-center'>
+            <span className='text-brand-primary inline-block mr-1.5'>
+              <RiSparklingFill />
+            </span>
+            <h2 className='text-xl'>AI Smart Insights</h2>
+          </div>
+          <div className='w-full md:w-1/2 mt-2'>
+            <p className='p-1 text-gray-400'>
+              You&apos;re spending 20% less on &apos;Dining Out&apos; this week.
+              Great job! Heads up, your &apos;Subscriptions&apos; bill is due
+              soon.
+            </p>
+            <span className='text-xs text-gray-500'>Powered by AI</span>
+          </div>
+        </div>
+      </section>
+      {/* Action Section */}
+      <section className='mb-8'>
+        <div className='w-full flex gap-2 md:gap-4'>
+          {actionBtn.map((b, i) => {
+            return (
+              <ActionButton
+                key={i}
+                {...b}
+              />
+            );
+          })}
+        </div>
+      </section>
+      {/* Recent Activity Section */}
+      <section className='mb-8'>
+        <div className='w-full bg-second-dark border border-gray-600 rounded-2xl px-4 py-4'>
+          <div className='flex items-center justify-between'>
+            <h2 className='text-xl'>Recent Activity</h2>
+            <button
+              type='button'
+              className='text-brand-primary text-sm'
+            >
+              View All
+            </button>
+          </div>
+          <ol className='flex flex-col justify-center mt-4 gap-2 md:gap-4  px-0 md:px-4 py-0 md:py-2'>
+            {exampleRecentActivity.map((l, i) => {
+              return (
+                <RecentActivityCard
+                  key={i}
+                  {...l}
+                />
+              );
+            })}
+          </ol>
+        </div>
+      </section>
     </div>
   );
 }

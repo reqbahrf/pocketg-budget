@@ -6,9 +6,13 @@
 }
 
 @theme {
+  --color-brand-primary: #13ec49;
+  --color-brand-secondary: #103619;
   /* Define a new color variable namespace called 'brand' */
   --color-brand-dark: #102215;
   --color-brand-light: #ecfdf5;
+
+  --color-second-dark: #1c2d20;
 
   --color-primary: light-dark(#102215, #ecfdf5);
 }

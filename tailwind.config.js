@@ -4,7 +4,7 @@ module.exports = {
   content: [
     './app/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './node_modules/ram-react-modal/dist/**/*.js',
+    './node_modules/ram-react-modal/src/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {

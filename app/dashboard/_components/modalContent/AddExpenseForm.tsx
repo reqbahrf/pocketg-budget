@@ -46,7 +46,6 @@ export default function AddExpenseForm() {
             {
               optionName: 'Food & Drinks',
               value: 'foodAndDrinks',
-              isDefault: true,
             },
             { optionName: 'Entertainment', value: 'entertainment' },
             { optionName: 'Transport', value: 'transport' },
@@ -67,7 +66,7 @@ export default function AddExpenseForm() {
           value={formData.paymentType}
           onChange={handleInputChange}
           options={[
-            { optionName: 'Cash', value: 'cash', isDefault: true },
+            { optionName: 'Cash', value: 'cash' },
             { optionName: 'E-wallet', value: 'ewallet' },
             { optionName: 'Debit/Credit', value: 'debitCredit' },
             { optionName: 'Other', value: 'other' },

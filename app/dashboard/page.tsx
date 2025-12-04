@@ -1,5 +1,6 @@
 'use client';
 import OverviewCard from './_components/OverviewCard';
+import AddExpenseForm from './_components/modalContent/AddExpenseForm';
 import {
   RiSparklingFill,
   RiAddLine,
@@ -9,6 +10,7 @@ import {
 import dynamic from 'next/dynamic';
 import { ReactNode } from 'react';
 import RecentActivityCard from './_components/RecentActivityCard';
+import { useModalContext } from 'ram-react-modal';
 const AreaChart = dynamic(() => import('./_components/AreaChart'), {
   ssr: false,
 });
@@ -16,7 +18,7 @@ const DonutChart = dynamic(() => import('./_components/DonutChart'), {
   ssr: false,
 });
 export default function Dashboard() {
-  // const { openModal } = useModalContext();
+  const { openModal } = useModalContext();
   const exampleOverviewData = [
     {
       cardTitle: 'Total Spent',
@@ -78,11 +80,21 @@ export default function Dashboard() {
       value: '₱ 190',
     },
   ];
+
+  const handleOpenAddExpenseModal = () => {
+    openModal({
+      headerColor: 'bg-brand-primary',
+      title: 'Add New Expense',
+      size: 'full',
+      children: <AddExpenseForm />,
+    });
+  };
   const actionBtn = [
     {
       btnIcon: <RiAddLine />,
       btnName: 'Add Expense',
       btnClass: 'bg-brand-primary text-black',
+      action: handleOpenAddExpenseModal,
     },
     {
       btnIcon: <RiReceiptFill />,

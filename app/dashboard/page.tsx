@@ -16,6 +16,7 @@ const DonutChart = dynamic(() => import('./_components/DonutChart'), {
   ssr: false,
 });
 export default function Dashboard() {
+  // const { openModal } = useModalContext();
   const exampleOverviewData = [
     {
       cardTitle: 'Total Spent',
@@ -77,7 +78,6 @@ export default function Dashboard() {
       value: '₱ 190',
     },
   ];
-
   const actionBtn = [
     {
       btnIcon: <RiAddLine />,
@@ -100,17 +100,20 @@ export default function Dashboard() {
     btnIcon: ReactNode;
     btnName: string;
     btnClass: string;
+    action?: () => void;
   }
 
   const ActionButton: React.FC<ActionBtnProps> = ({
     btnIcon,
     btnName,
     btnClass,
+    action,
   }) => {
     return (
       <button
         type='button'
         className={`${btnClass} w-full flex justify-center items-center py-2 px-4 border border-transparent rounded-2xl shadow-sm text-sm font-medium cursor-pointer`}
+        onClick={action}
       >
         <span>{btnIcon}</span>&nbsp;{btnName}
       </button>

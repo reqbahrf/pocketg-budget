@@ -127,16 +127,16 @@ export default function Dashboard() {
         </span>
       </div>
       {/* Overview Section*/}
-      <div className='flex flex-col my-4 md:my-8 md:flex-row justify-center gap-2 md:gap-4'>
+      <section className='flex flex-col my-4 md:my-8 md:flex-row justify-center gap-2 md:gap-4'>
         {exampleOverviewData.map((t, i) => (
           <OverviewCard
             key={i}
             {...t}
           />
         ))}
-      </div>
+      </section>
       {/* Chart Section */}
-      <div className='flex w-full gap-2 md:gap-4'>
+      <section className='flex w-full gap-2 md:gap-4'>
         <AreaChart
           series={exampleChartData}
           theme='dark'

@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-
+@import 'ram-react-modal/dist/ModalBase.css';
 :root {
   --background: #ffffff;
   --foreground: #171717;

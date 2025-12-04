@@ -7,8 +7,8 @@ import { useState } from 'react';
 export default function AddExpenseForm() {
   const [formData, setFormData] = useState({
     amount: '',
-    payment: '',
-    category: '',
+    payment: 'cash',
+    category: 'foodAndDrinks',
     paymentType: '',
     dateCreated: '',
     timeCreated: '',

@@ -13,8 +13,6 @@
   --color-brand-light: #ecfdf5;
 
   --color-second-dark: #1c2d20;
-
-  --color-primary: light-dark(#102215, #ecfdf5);
 }
 
 @theme inline {

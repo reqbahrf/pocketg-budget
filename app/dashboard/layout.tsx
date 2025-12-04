@@ -1,6 +1,5 @@
 import React from 'react';
 import DashboardHeader from '@/components/ui/DashboardHeader';
-
 export default function dashboardLayout({
   children,
 }: Readonly<{

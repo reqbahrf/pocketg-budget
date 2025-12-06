@@ -8,7 +8,7 @@ import {
   RiBarChart2Fill,
 } from '@remixicon/react';
 import dynamic from 'next/dynamic';
-import { ReactNode } from 'react';
+import { ReactNode, useRef } from 'react';
 import RecentActivityCard from './_components/RecentActivityCard';
 import { useModalContext } from 'ram-react-modal';
 const AreaChart = dynamic(() => import('./_components/AreaChart'), {
@@ -19,6 +19,7 @@ const DonutChart = dynamic(() => import('./_components/DonutChart'), {
 });
 export default function Dashboard() {
   const { openModal } = useModalContext();
+  const AddExpenseTriggerRef = useRef<HTMLElement>(null);
   const exampleOverviewData = [
     {
       cardTitle: 'Total Spent',
@@ -82,11 +83,21 @@ export default function Dashboard() {
   ];
 
   const handleOpenAddExpenseModal = () => {
+    console.log(
+      'This is the triggered ref in open modal',
+      AddExpenseTriggerRef
+    );
     openModal({
       headerColor: 'bg-brand-primary',
+      bodyColor: 'bg-brand-secondary',
       title: 'Add New Expense',
       size: 'full',
-      children: <AddExpenseForm />,
+      content: <AddExpenseForm />,
+      triggerRef: AddExpenseTriggerRef,
+      onBeforeClosing: {
+        noticeType: 'warn',
+        textContent: 'Are you sure you want to close this modal?',
+      },
     });
   };
   const actionBtn = [
@@ -95,6 +106,7 @@ export default function Dashboard() {
       btnName: 'Add Expense',
       btnClass: 'bg-brand-primary text-black',
       action: handleOpenAddExpenseModal,
+      triggerBtnRef: AddExpenseTriggerRef,
     },
     {
       btnIcon: <RiReceiptFill />,
@@ -113,6 +125,7 @@ export default function Dashboard() {
     btnName: string;
     btnClass: string;
     action?: () => void;
+    triggerBtnRef?: React.RefObject<HTMLElement | null>;
   }
 
   const ActionButton: React.FC<ActionBtnProps> = ({
@@ -120,9 +133,15 @@ export default function Dashboard() {
     btnName,
     btnClass,
     action,
+    triggerBtnRef,
   }) => {
     return (
       <button
+        ref={(e) => {
+          if (triggerBtnRef !== undefined) {
+            triggerBtnRef.current = e;
+          }
+        }}
         type='button'
         className={`${btnClass} w-full flex justify-center items-center py-2 px-4 border border-transparent rounded-2xl shadow-sm text-sm font-medium cursor-pointer`}
         onClick={action}

@@ -5,10 +5,10 @@
       "name": "pocketg-budget",
       "dependencies": {
         "@remixicon/react": "^4.7.0",
+        "ram-react-modal": "C:/laragon/www/packages/modal-package/ram-react-modal-1.0.0.tgz",
         "apexcharts": "^5.3.6",
         "next": "16.0.7",
         "next-themes": "^0.4.6",
-        "ram-react-modal": "1.0.12",
         "react": "19.2.0",
         "react-apexcharts": "^1.9.0",
         "react-dom": "19.2.0",
@@ -728,7 +728,7 @@
 
     "queue-microtask": ["queue-microtask@1.2.3", "", {}, "sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A=="],
 
-    "ram-react-modal": ["ram-react-modal@1.0.12", "", { "peerDependencies": { "react": ">=18.0.0", "react-dom": ">=18.0.0", "tailwindcss": ">=3.0.0" } }, "sha512-dMMwAcOwAA67KJ3o3/3YpaLxL3wwYkH6qOwigkfPUWuBrsCVdKhNNKfVeKeBbW/nQrOru/3AvjghZw4DswchOA=="],
+    "ram-react-modal": ["ram-react-modal@C:/laragon/www/packages/modal-package/ram-react-modal-1.0.0.tgz", { "peerDependencies": { "react": ">=18.0.0", "react-dom": ">=18.0.0" } }],
 
     "react": ["react@19.2.0", "", {}, "sha512-tmbWg6W31tQLeB5cdIBOicJDJRR2KzXsV7uSK9iNfLWQ5bIZfxuPEHp7M8wiHyHnn0DD1i7w3Zmin0FtkrwoCQ=="],
 

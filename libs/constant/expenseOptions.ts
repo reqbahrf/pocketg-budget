@@ -1,4 +1,6 @@
 import { Option } from '@/components/Input/Select';
+import processDisplayName from '../utils/OptionsDisplayName';
+
 export const CATEGORY_OPTIONS: Option[] = [
   {
     optionName: 'Food & Drinks',
@@ -13,4 +15,8 @@ export const CATEGORY_OPTIONS: Option[] = [
   { optionName: 'Savings', value: 'savings' },
   { optionName: 'Miscellaneous', value: 'miscellaneous' },
   { optionName: 'Other', value: 'other' },
-];
+] as const;
+
+export type CategoryValue = (typeof CATEGORY_OPTIONS)[number]['value'];
+
+export const CATEGORY_DISPLAY_NAMES = processDisplayName(CATEGORY_OPTIONS);

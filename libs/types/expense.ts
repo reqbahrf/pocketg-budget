@@ -1,11 +1,1 @@
-export type CategoryValue =
-  | 'foodAndDrinks'
-  | 'entertainment'
-  | 'transport'
-  | 'school'
-  | 'groceries'
-  | 'bills'
-  | 'personal'
-  | 'savings'
-  | 'miscellaneous'
-  | 'other';
+export type { CategoryValue } from '@/libs/constant/expenseOptions';

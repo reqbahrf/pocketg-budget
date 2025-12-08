@@ -84,7 +84,7 @@ export default function ViewAllTransaction() {
   const dateRangeLabel = 'Date Range';
 
   return (
-    <div className='w-full p-4 '>
+    <div className='w-full p-4'>
       {/* Header Section */}
       <header className='mb-6 text-white'>
         <h1 className='text-3xl font-bold'>All Transactions</h1>
@@ -131,7 +131,7 @@ export default function ViewAllTransaction() {
           <RiArrowDownSLine className='w-5 h-5 text-white' />
         </FilterControl>
       </div>
-      <ol className='flex flex-col gap-2 md:gap-4 mt-12 mb-4 overflow-auto'>
+      <ol className='flex flex-col gap-2 md:gap-4 mt-12 mb-4 max-h-[65dvh] overflow-y-scroll'>
         {mockTransactions.map((item, i) => (
           <DetailedTransactionCard
             key={i}

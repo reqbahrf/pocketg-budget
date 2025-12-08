@@ -1,8 +1,16 @@
 import { Option } from '@/components/Input/Select';
-const PAYMENT_OPTION: Option[] = [
+import processDisplayName from '../utils/OptionsDisplayName';
+
+const PAYMENT_OPTIONS: Option[] = [
   { optionName: 'Cash', value: 'cash' },
   { optionName: 'E-wallet', value: 'ewallet' },
   { optionName: 'Debit/Credit', value: 'debitCredit' },
   { optionName: 'Other', value: 'other' },
-];
-export default PAYMENT_OPTION;
+  { optionName: 'Direct Deposit', value: 'directDeposit' },
+] as const;
+
+export type PaymentValue = (typeof PAYMENT_OPTIONS)[number]['value'];
+
+export const PAYMENT_DISPLAY_NAMES = processDisplayName(PAYMENT_OPTIONS);
+
+export default PAYMENT_OPTIONS;

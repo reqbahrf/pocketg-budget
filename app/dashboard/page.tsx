@@ -1,6 +1,7 @@
 'use client';
 import OverviewCard from './_components/OverviewCard';
 import AddExpenseForm from './_components/modalContent/AddExpenseForm';
+import ViewAllTransaction from './_components/modalContent/ViewAllTransaction';
 import {
   RiSparklingFill,
   RiAddLine,
@@ -20,6 +21,7 @@ const DonutChart = dynamic(() => import('./_components/DonutChart'), {
 export default function Dashboard() {
   const { openModal } = useModalContext();
   const AddExpenseTriggerRef = useRef<HTMLElement>(null);
+  const ViewAllTransactionRef = useRef<HTMLElement>(null);
   const exampleOverviewData = [
     {
       cardTitle: 'Total Spent',
@@ -83,10 +85,6 @@ export default function Dashboard() {
   ];
 
   const handleOpenAddExpenseModal = () => {
-    console.log(
-      'This is the triggered ref in open modal',
-      AddExpenseTriggerRef
-    );
     openModal({
       headerColor: 'bg-brand-primary',
       bodyColor: 'bg-brand-secondary',
@@ -98,6 +96,17 @@ export default function Dashboard() {
         noticeType: 'warn',
         textContent: 'Are you sure you want to close this modal?',
       },
+    });
+  };
+
+  const handleOpenViewAllTransactions = () => {
+    openModal({
+      headerColor: 'bg-brand-primary',
+      bodyColor: 'bg-brand-secondary',
+      title: 'View All Transaction',
+      size: 'full',
+      content: <ViewAllTransaction />,
+      triggerRef: ViewAllTransactionRef,
     });
   };
   const actionBtn = [
@@ -112,6 +121,8 @@ export default function Dashboard() {
       btnIcon: <RiReceiptFill />,
       btnName: 'View All Transactions',
       btnClass: 'bg-brand-secondary text-white',
+      action: handleOpenViewAllTransactions,
+      triggerBtnRef: ViewAllTransactionRef,
     },
     {
       btnIcon: <RiBarChart2Fill />,

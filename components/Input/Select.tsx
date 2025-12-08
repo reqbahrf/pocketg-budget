@@ -1,7 +1,12 @@
 import React from 'react';
 
+export type Option = {
+  optionName: string;
+  value: string;
+};
+
 type SelectInputProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
-  options: { optionName: string; value: string; isDefault?: boolean }[];
+  options: Option[];
 };
 export default function Select({ options, ...rest }: SelectInputProps) {
   return (

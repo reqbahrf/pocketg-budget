@@ -2,6 +2,8 @@ import Input from '@/components/Input/Input';
 import Select from '@/components/Input/Select';
 import Textarea from '@/components/Input/Textarea';
 import CURRENCIES_SIGN from '@/libs/constant/currenciesSign';
+import PAYMENT_OPTION from '@/libs/constant/paymentOptions';
+import { CATEGORY_OPTIONS } from '@/libs/constant/expenseOptions';
 import { useState } from 'react';
 
 export default function AddExpenseForm() {
@@ -42,21 +44,7 @@ export default function AddExpenseForm() {
           name='category'
           onChange={handleInputChange}
           value={formData.category}
-          options={[
-            {
-              optionName: 'Food & Drinks',
-              value: 'foodAndDrinks',
-            },
-            { optionName: 'Entertainment', value: 'entertainment' },
-            { optionName: 'Transport', value: 'transport' },
-            { optionName: 'School', value: 'school' },
-            { optionName: 'Groceries', value: 'groceries' },
-            { optionName: 'Bills', value: 'bills' },
-            { optionName: 'Personal', value: 'personal' },
-            { optionName: 'Savings', value: 'savings' },
-            { optionName: 'Miscellaneous', value: 'miscellaneous' },
-            { optionName: 'Other', value: 'other' },
-          ]}
+          options={CATEGORY_OPTIONS}
         />
       </div>
       <div>
@@ -65,12 +53,7 @@ export default function AddExpenseForm() {
           name='paymentType'
           value={formData.paymentType}
           onChange={handleInputChange}
-          options={[
-            { optionName: 'Cash', value: 'cash' },
-            { optionName: 'E-wallet', value: 'ewallet' },
-            { optionName: 'Debit/Credit', value: 'debitCredit' },
-            { optionName: 'Other', value: 'other' },
-          ]}
+          options={PAYMENT_OPTION}
         />
       </div>
       <div>

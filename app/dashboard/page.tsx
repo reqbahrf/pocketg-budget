@@ -9,14 +9,18 @@ import {
   RiBarChart2Fill,
 } from '@remixicon/react';
 import dynamic from 'next/dynamic';
+import Area from '@/components/skeleton/chart/Area';
+import Donut from '@/components/skeleton/chart/Donut';
 import { ReactNode, useRef } from 'react';
 import RecentActivityCard from './_components/RecentActivityCard';
 import { useModalContext } from 'ram-react-modal';
 const AreaChart = dynamic(() => import('./_components/AreaChart'), {
   ssr: false,
+  loading: Area,
 });
 const DonutChart = dynamic(() => import('./_components/DonutChart'), {
   ssr: false,
+  loading: Donut,
 });
 export default function Dashboard() {
   const { openModal } = useModalContext();
@@ -177,7 +181,7 @@ export default function Dashboard() {
         ))}
       </section>
       {/* Chart Section */}
-      <section className='flex w-full gap-2 md:gap-4'>
+      <section className='flex md:flex-row flex-col w-full gap-2 md:gap-4'>
         <AreaChart
           series={exampleChartData}
           theme='dark'

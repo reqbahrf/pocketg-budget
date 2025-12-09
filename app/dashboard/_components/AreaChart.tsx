@@ -1,14 +1,14 @@
 'use client';
 import Chart from 'react-apexcharts';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, memo } from 'react';
 import type { ApexOptions } from 'apexcharts';
 interface AreaChartProps {
   series: number[];
   theme: 'light' | 'dark';
 }
-export default function AreaChart({ series, theme }: AreaChartProps) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [chartData, _setChartData] = useState<AreaChartProps>({
+
+const AreaChart = ({ series, theme }: AreaChartProps) => {
+  const [chartData] = useState({
     series,
     theme,
   });
@@ -98,6 +98,7 @@ export default function AreaChart({ series, theme }: AreaChartProps) {
   const totalDailySpending = useMemo(() => {
     return series.reduce((a, b) => a + b, 0);
   }, [series]);
+
   return (
     <div className='md:w-1/2 w-full bg-second-dark border border-gray-600 rounded-2xl px-4 py-4'>
       <div className='text-sm mb-1 font-normal'>Daily Spend (Last 14 Days)</div>
@@ -115,4 +116,6 @@ export default function AreaChart({ series, theme }: AreaChartProps) {
       />
     </div>
   );
-}
+};
+
+export default memo(AreaChart);

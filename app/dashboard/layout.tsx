@@ -6,7 +6,7 @@ export default function dashboardLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <main className='flex flex-col justify-center items-center '>
+    <main className='flex flex-col justify-center items-center p-1 md:p-4'>
       <DashboardHeader />
       {children}
     </main>

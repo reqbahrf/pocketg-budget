@@ -212,7 +212,7 @@ export default function Dashboard() {
       </section>
       {/* Action Section */}
       <section className='mb-8'>
-        <div className='w-full flex gap-2 md:gap-4'>
+        <div className='w-full flex md:flex-row flex-col gap-2 md:gap-4'>
           {actionBtn.map((b, i) => {
             return (
               <ActionButton

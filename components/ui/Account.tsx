@@ -9,15 +9,15 @@ export default function Account() {
       onClick={toggleDropdown}
     >
       <div className='flex justify-center items-center'>
-        <RiAccountCircleLine className='w-12 h-12' />
-        <span className='ps-2'>Reanz Arthur</span>
+        <RiAccountCircleLine className='md:w-12 md:h-12 w-8 h-8' />
+        <span className='ps-1 md:ps-2 text-sm md:text-lg'>Reanz Arthur</span>
       </div>
       {isDropdownVisible && (
-        <div className='absolute top-[110%] right-[-5px] mt-4 w-40 rounded-md bg-white py-2 shadow-lg dark:bg-gray-800'>
+        <div className='absolute top-[110%] right-[-5px] mt-4 w-40 rounded-md bg-white py-2 shadow-lg dark:bg-brand-secondary'>
           <hr className='mt-3 mb-2' />
           <div className='mb-2 flex flex-col justify-center items-center'>
-            <div className='mb-2'>Account</div>
-            <div className='text-red-700'>Logout</div>
+            <div className='mb-2 text-sm md:text-md'>Account</div>
+            <div className='text-red-700 text-sm md:text-md'>Logout</div>
           </div>
         </div>
       )}

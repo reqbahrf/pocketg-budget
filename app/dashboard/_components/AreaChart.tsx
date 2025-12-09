@@ -81,16 +81,6 @@ const AreaChart = ({ series, theme }: AreaChartProps) => {
             show: false,
           },
         },
-        responsive: [
-          {
-            breakpoint: 480,
-            options: {
-              chart: {
-                width: 200,
-              },
-            },
-          },
-        ],
       } as ApexOptions),
     [chartData]
   );
@@ -112,6 +102,7 @@ const AreaChart = ({ series, theme }: AreaChartProps) => {
           { name: 'Daily Spend (Last 14 Days)', data: chartData.series },
         ]}
         type='area'
+        width={'100%'}
         height={350}
       />
     </div>

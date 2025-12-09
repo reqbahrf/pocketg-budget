@@ -3,7 +3,7 @@ import Select from '@/components/Input/Select';
 import Textarea from '@/components/Input/Textarea';
 import CURRENCIES_SIGN from '@/libs/constant/currenciesSign';
 import PAYMENT_OPTION from '@/libs/constant/paymentOptions';
-import { customInputNumericInput } from '@/libs/utils/inputFormatter';
+import { inputNumericFormatter } from '@/libs/utils/inputFormatter';
 import { CATEGORY_OPTIONS } from '@/libs/constant/expenseOptions';
 import { useState } from 'react';
 import { RiSaveFill } from '@remixicon/react';
@@ -31,7 +31,7 @@ export default function AddExpenseForm() {
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const formattedEvent = { ...e };
-    customInputNumericInput(formattedEvent);
+    inputNumericFormatter(formattedEvent);
     handleInputChange(formattedEvent);
   };
 

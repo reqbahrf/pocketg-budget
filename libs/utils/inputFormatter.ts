@@ -1,22 +1,23 @@
-const customInputNumericInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const oldValue = e.currentTarget.value;
-  const selectionStart = e.currentTarget.selectionStart ?? 0;
-  if (!oldValue) return;
+const inputNumericFormatter = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const input = e.currentTarget;
+  const oldValue = input.value;
+  const selectionStart = input.selectionStart ?? 0;
+
   const rawValue = oldValue.replace(/,/g, '');
-  let caretOffset = 0;
 
-  if (oldValue[selectionStart - 1] === ',') {
-    caretOffset = -1;
+  if (rawValue === '') {
+    if (oldValue !== '') {
+      input.value = '';
+      input.setSelectionRange(0, 0);
+    }
+    return;
   }
 
-  let value = rawValue.replace(/[^0-9.]/g, '');
+  let value = rawValue.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');
+
   const parts = value.split('.');
-  if (parts.length > 2) {
-    value = `${parts[0]}.${parts[1]}`;
-  }
-  if (value.includes('.')) {
-    const [integerPart, decimalPart] = value.split('.');
-    value = `${integerPart}.${(decimalPart || '').substring(0, 2)}`;
+  if (parts.length > 1) {
+    value = `${parts[0]}.${(parts[1] || '').substring(0, 2)}`;
   }
 
   const [integer, decimal] = value.split('.');
@@ -25,13 +26,22 @@ const customInputNumericInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     decimal !== undefined ? `${formattedInteger}.${decimal}` : formattedInteger;
 
   if (formattedValue !== oldValue) {
-    e.currentTarget.value = formattedValue;
+    input.value = formattedValue;
+
+    let caretOffset = 0;
+    if (
+      oldValue.charAt(selectionStart - 1) === ',' &&
+      formattedValue.length < oldValue.length
+    ) {
+      caretOffset = -1;
+    }
 
     let newCaret =
       selectionStart + (formattedValue.length - oldValue.length) + caretOffset;
+
     newCaret = Math.max(0, Math.min(formattedValue.length, newCaret));
-    e.currentTarget.setSelectionRange(newCaret, newCaret);
+    input.setSelectionRange(newCaret, newCaret);
   }
 };
 
-export { customInputNumericInput };
+export { inputNumericFormatter };

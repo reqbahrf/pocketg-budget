@@ -86,10 +86,8 @@ export default function Dashboard() {
 
   const handleOpenAddExpenseModal = () => {
     openModal({
-      headerColor: 'bg-brand-primary',
-      bodyColor: 'bg-brand-secondary',
-      title: 'Add New Expense',
-      size: 'full',
+      bodyColor: 'dark:bg-brand-dark brand-light',
+      size: 'md-f-h',
       content: <AddExpenseForm />,
       triggerRef: AddExpenseTriggerRef,
       onBeforeClosing: {
@@ -101,9 +99,7 @@ export default function Dashboard() {
 
   const handleOpenViewAllTransactions = () => {
     openModal({
-      headerColor: 'bg-brand-primary',
-      bodyColor: 'bg-brand-secondary',
-      title: 'View All Transaction',
+      bodyColor: 'dark:bg-brand-dark brand-light',
       size: 'full',
       content: <ViewAllTransaction />,
       triggerRef: ViewAllTransactionRef,

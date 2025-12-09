@@ -5,6 +5,7 @@ import CURRENCIES_SIGN from '@/libs/constant/currenciesSign';
 import PAYMENT_OPTION from '@/libs/constant/paymentOptions';
 import { CATEGORY_OPTIONS } from '@/libs/constant/expenseOptions';
 import { useState } from 'react';
+import { RiSaveFill } from '@remixicon/react';
 
 export default function AddExpenseForm() {
   const [formData, setFormData] = useState({
@@ -28,81 +29,106 @@ export default function AddExpenseForm() {
   };
 
   return (
-    <div className='w-full'>
-      <div>
-        <label htmlFor='amount'>Amount*</label>
-        <Input
-          type='text'
-          name='amount'
-          value={formData.amount}
-          onChange={handleInputChange}
-        />
+    <form action=''>
+      <div className='w-full px-10 pb-10'>
+        <header className='mb-6 text-white'>
+          <h1 className='text-3xl font-bold'>Add Expense</h1>
+          <p className='mt-1 text-gray-500'>
+            Log a new transaction to keep your budget on track
+          </p>
+        </header>
+        <div className='mb-4'>
+          <Input
+            type='text'
+            name='amount'
+            value={formData.amount}
+            onChange={handleInputChange}
+            label='Amount *'
+            required
+          />
+        </div>
+        <div className='flex w-full gap-2 md:gap-4 mb-4'>
+          <div className='w-full'>
+            <Select
+              name='category'
+              onChange={handleInputChange}
+              value={formData.category}
+              options={CATEGORY_OPTIONS}
+              label='Category *'
+              required
+            />
+          </div>
+          <div className='w-full'>
+            <Select
+              name='paymentType'
+              value={formData.paymentType}
+              onChange={handleInputChange}
+              options={PAYMENT_OPTION}
+              label='Payment Type *'
+              required
+            />
+          </div>
+        </div>
+        <div className='flex w-full gap-2 md:gap-4 mb-4'>
+          <div className='w-full'>
+            <Input
+              type='date'
+              name='dateCreated'
+              onChange={handleInputChange}
+              value={
+                formData.dateCreated
+                  ? formData.dateCreated
+                  : new Date().toISOString().split('T')[0]
+              }
+              label='Date*'
+            />
+          </div>
+          <div className='w-full'>
+            <Input
+              type='time'
+              name='timeCreated'
+              onChange={handleInputChange}
+              value={
+                formData.timeCreated
+                  ? formData.timeCreated
+                  : new Date().toLocaleTimeString('en-US', {
+                      hour12: false,
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })
+              }
+              label='Time'
+            />
+          </div>
+        </div>
+        <div className='mb-4'>
+          <Textarea
+            label='Notes/Description(Optional)'
+            name='note'
+            onChange={handleInputChange}
+            value={formData.note}
+            rows={5}
+          />
+        </div>
+        <div className='mb-4'>
+          <Select
+            name='currency'
+            onChange={handleInputChange}
+            value={formData.currency}
+            options={CURRENCIES_SIGN}
+            label='Currency *'
+            required
+          />
+        </div>
+        <div className='w-full flex justify-end'>
+          <button
+            type='submit'
+            className='bg-brand-primary text-black flex justify-center items-center py-2 px-4 border border-transparent rounded-2xl shadow-sm text-sm font-medium cursor-pointer'
+          >
+            <RiSaveFill /> Save
+          </button>
+        </div>
       </div>
-      <div>
-        <label htmlFor='category'>Category</label>
-        <Select
-          name='category'
-          onChange={handleInputChange}
-          value={formData.category}
-          options={CATEGORY_OPTIONS}
-        />
-      </div>
-      <div>
-        <label htmlFor='payment'>Payment Type*</label>
-        <Select
-          name='paymentType'
-          value={formData.paymentType}
-          onChange={handleInputChange}
-          options={PAYMENT_OPTION}
-        />
-      </div>
-      <div>
-        <label htmlFor='date'>Date*</label>
-        <Input
-          type='date'
-          name='dateCreated'
-          onChange={handleInputChange}
-          value={
-            formData.dateCreated
-              ? formData.dateCreated
-              : new Date().toISOString().split('T')[0]
-          }
-        />
-      </div>
-      <div>
-        <label htmlFor='time'>Time (Optional)</label>
-        <Input
-          type='time'
-          name='timeCreated'
-          onChange={handleInputChange}
-          value={
-            formData.timeCreated
-              ? formData.timeCreated
-              : new Date().toLocaleTimeString('en-US', {
-                  hour12: false,
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })
-          }
-        />
-      </div>
-      <div>
-        <label htmlFor='note'>Notes/Description(Optional)</label>
-        <Textarea
-          name='note'
-          onChange={handleInputChange}
-          value={formData.note}
-        />
-      </div>
-      <div>
-        <label htmlFor='currency'>Currency*</label>
-        <Select
-          name='currency'
-          onChange={handleInputChange}
-          value={formData.currency}
-          options={CURRENCIES_SIGN}
-        />
-      </div>
-    </div>
+    </form>
   );
 }

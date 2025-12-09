@@ -88,7 +88,7 @@ export default function ViewAllTransaction() {
       {/* Header Section */}
       <header className='mb-6 text-white'>
         <h1 className='text-3xl font-bold'>All Transactions</h1>
-        <p className='mt-1 text-gray-300'>
+        <p className='mt-1 text-gray-500'>
           Review your spending history and filter your transactions.
         </p>
       </header>

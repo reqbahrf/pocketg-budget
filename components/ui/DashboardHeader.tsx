@@ -8,14 +8,12 @@ export default function DashboardHeader() {
       <div className='md:w-[80dvw] w-full h-full flex justify-between items-center border-b border-gray-600'>
         <div className='flex items-center gap-2 md:gap-4'>
           <Image
-            src='/logo.webp'
+            src='/web-app-manifest-192x192.png'
             alt='logo'
             width={50}
             height={50}
           />
-          <span className=' text-md md:text-2xl font-bold '>
-            PocketG Budget Dashboard
-          </span>
+          <span className=' text-md md:text-2xl font-bold '>PocketG</span>
         </div>
         <Account />
       </div>

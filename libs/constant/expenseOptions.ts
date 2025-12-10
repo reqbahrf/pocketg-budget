@@ -12,7 +12,7 @@ export const CATEGORY_OPTIONS: Option[] = [
   { optionName: 'Groceries', value: 'groceries' },
   { optionName: 'Bills', value: 'bills' },
   { optionName: 'Personal', value: 'personal' },
-  { optionName: 'Savings', value: 'savings' },
+  { optionName: 'Savings Goal', value: 'savingsGoal' },
   { optionName: 'Miscellaneous', value: 'miscellaneous' },
   { optionName: 'Other', value: 'other' },
 ] as const;

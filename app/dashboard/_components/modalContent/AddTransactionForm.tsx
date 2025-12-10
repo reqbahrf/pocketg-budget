@@ -3,20 +3,29 @@ import Select from '@/components/Input/Select';
 import Textarea from '@/components/Input/Textarea';
 import CURRENCIES_SIGN from '@/libs/constant/currenciesSign';
 import PAYMENT_OPTION from '@/libs/constant/paymentOptions';
+import TRANSACTION_OPTIONS from '@/libs/constant/transactionOptions';
+import { addTransaction } from '@/libs/indexDB/crudOperations';
 import { inputNumericFormatter } from '@/libs/utils/inputFormatter';
 import { CATEGORY_OPTIONS } from '@/libs/constant/expenseOptions';
 import { useState } from 'react';
+import type { AddTransactionPayload } from '@/libs/types/data';
 import { RiSaveFill } from '@remixicon/react';
 
-export default function AddExpenseForm() {
-  const [formData, setFormData] = useState({
+type AddTransactionFormState = AddTransactionPayload & {
+  dateCreated: string;
+  timeCreated: string;
+};
+
+export default function AddTransactionForm() {
+  const [formData, setFormData] = useState<AddTransactionFormState>({
     amount: '',
-    payment: 'cash',
+    transactionType: 'income',
+    paymentMethod: 'cash',
     category: 'foodAndDrinks',
-    paymentType: '',
+    merchant: '',
     dateCreated: '',
     timeCreated: '',
-    note: '',
+    notes: '',
     currency: '',
   });
 
@@ -35,8 +44,19 @@ export default function AddExpenseForm() {
     handleInputChange(formattedEvent);
   };
 
+  const handleOnSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // const combineDateTimeToISO = (date: string, time?:string) => {
+
+    //   const combined  = `${date}T${time}:00`;
+    //   return new Date(combined).toISOString();
+    // }
+    addTransaction(formData).then(console.log).catch(console.error);
+  };
+
   return (
-    <form action=''>
+    <form onSubmit={handleOnSubmit}>
       <div className='w-full px-10 pb-10'>
         <header className='mb-6 text-white'>
           <h1 className='text-3xl font-bold'>Add Expense</h1>
@@ -48,12 +68,36 @@ export default function AddExpenseForm() {
           <Input
             type='text'
             name='amount'
+            placeholder='1,000.00'
             value={formData.amount}
             onChange={handleAmountChange}
             label='Amount *'
             required
           />
         </div>
+        <div className='mb-4 flex flex-col md:flex-row gap-2 md:gap-4'>
+          <div className='w-full'>
+            <Input
+              type='text'
+              name='merchant'
+              placeholder='Gcash, Lazada, Grab, etc.'
+              value={formData?.merchant || ''}
+              onChange={handleInputChange}
+              label='Merchant (Optional)'
+            />
+          </div>
+          <div className='w-full'>
+            <Select
+              name='transactionType'
+              value={formData.transactionType}
+              onChange={handleInputChange}
+              options={TRANSACTION_OPTIONS}
+              label='Transaction Type *'
+              required
+            />
+          </div>
+        </div>
+
         <div className='flex w-full gap-2 md:gap-4 mb-4'>
           <div className='w-full'>
             <Select
@@ -67,11 +111,11 @@ export default function AddExpenseForm() {
           </div>
           <div className='w-full'>
             <Select
-              name='paymentType'
-              value={formData.paymentType}
+              name='paymentMethod'
+              value={formData.paymentMethod}
               onChange={handleInputChange}
               options={PAYMENT_OPTION}
-              label='Payment Type *'
+              label='Payment Method *'
               required
             />
           </div>
@@ -87,7 +131,7 @@ export default function AddExpenseForm() {
                   ? formData.dateCreated
                   : new Date().toISOString().split('T')[0]
               }
-              label='Date*'
+              label='Date'
             />
           </div>
           <div className='w-full'>
@@ -111,9 +155,9 @@ export default function AddExpenseForm() {
         <div className='mb-4'>
           <Textarea
             label='Notes/Description(Optional)'
-            name='note'
+            name='notes'
             onChange={handleInputChange}
-            value={formData.note}
+            value={formData.notes || ''}
             rows={5}
           />
         </div>

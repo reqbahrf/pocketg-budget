@@ -5,8 +5,8 @@ const PAYMENT_OPTIONS: Option[] = [
   { optionName: 'Cash', value: 'cash' },
   { optionName: 'E-wallet', value: 'ewallet' },
   { optionName: 'Debit/Credit', value: 'debitCredit' },
-  { optionName: 'Other', value: 'other' },
   { optionName: 'Direct Deposit', value: 'directDeposit' },
+  { optionName: 'Other', value: 'other' },
 ] as const;
 
 export type PaymentValue = (typeof PAYMENT_OPTIONS)[number]['value'];

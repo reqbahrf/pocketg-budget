@@ -16,7 +16,8 @@
     "ram-react-modal": "1.1.3",
     "react": "19.2.0",
     "react-apexcharts": "^1.9.0",
-    "react-dom": "19.2.0"
+    "react-dom": "19.2.0",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.17",

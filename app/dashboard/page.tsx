@@ -1,6 +1,6 @@
 'use client';
 import OverviewCard from './_components/OverviewCard';
-import AddExpenseForm from './_components/modalContent/AddExpenseForm';
+import AddExpenseForm from './_components/modalContent/AddTransactionForm';
 import ViewAllTransaction from './_components/modalContent/ViewAllTransaction';
 import {
   RiSparklingFill,

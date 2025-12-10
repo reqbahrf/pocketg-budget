@@ -5,7 +5,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: 'PocketG PWA',
     short_name: 'PocketG',
     description: 'A Progressive Web App Budget Tracker',
-    start_url: '/',
+    start_url: '/dashboard',
     scope: '/',
     icons: [
       {

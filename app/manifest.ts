@@ -6,7 +6,14 @@ export default function manifest(): MetadataRoute.Manifest {
     short_name: 'PocketG',
     description: 'A Progressive Web App Budget Tracker',
     start_url: '/',
+    scope: '/',
     icons: [
+      {
+        src: '/web-app-manifest-192x192.png',
+        sizes: '192x192',
+        type: 'image/png',
+        purpose: 'any',
+      },
       {
         src: '/web-app-manifest-192x192.png',
         sizes: '192x192',
@@ -23,5 +30,18 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: '#ffffff',
     background_color: '#ffffff',
     display: 'standalone',
+    screenshots: [
+      {
+        src: '/screenshots/desktop.png',
+        sizes: '1897x1058',
+        type: 'image/png',
+        form_factor: 'wide',
+      },
+      {
+        src: '/screenshots/mobile.png',
+        sizes: '1080x2104',
+        type: 'image/png',
+      },
+    ],
   };
 }

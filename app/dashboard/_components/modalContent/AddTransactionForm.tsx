@@ -11,6 +11,7 @@ import { CATEGORY_OPTIONS } from '@/libs/constant/expenseOptions';
 import { useState } from 'react';
 import type { AddTransactionPayload } from '@/libs/types/data';
 import { RiSaveFill } from '@remixicon/react';
+import { useModalContext } from 'ram-react-modal';
 
 type AddTransactionFormState = AddTransactionPayload & {
   dateCreated: string;
@@ -18,6 +19,7 @@ type AddTransactionFormState = AddTransactionPayload & {
 };
 
 export default function AddTransactionForm() {
+  const { closeModal } = useModalContext();
   const [formData, setFormData] = useState<AddTransactionFormState>({
     amount: '',
     transactionType: 'income',
@@ -59,11 +61,16 @@ export default function AddTransactionForm() {
     const combineDateTimeToISO = new Date(date).toISOString();
 
     const data = { ...rest, createdAt: combineDateTimeToISO };
-    toast.promise(addTransaction(data), {
-      loading: 'Adding transaction...',
-      success: 'Transaction added successfully',
-      error: 'Failed to add transaction',
-    });
+    try {
+      await toast.promise(addTransaction(data), {
+        loading: 'Adding transaction...',
+        success: 'Transaction added successfully',
+        error: 'Failed to add transaction',
+      });
+      closeModal();
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
@@ -94,7 +101,8 @@ export default function AddTransactionForm() {
               placeholder='Gcash, Lazada, Grab, etc.'
               value={formData?.merchant || ''}
               onChange={handleInputChange}
-              label='Merchant (Optional)'
+              label='Merchant *'
+              required
             />
           </div>
           <div className='w-full'>

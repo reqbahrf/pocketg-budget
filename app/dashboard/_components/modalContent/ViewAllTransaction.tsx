@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Input from '@/components/Input/Input';
 import Select, { Option } from '@/components/Input/Select';
 import { CATEGORY_OPTIONS } from '@/libs/constant/expenseOptions';
@@ -80,7 +80,7 @@ const SelectWrapper: React.FC<{
 );
 
 export default function ViewAllTransaction() {
-  // State management would be added here, but for now we focus on the structure and components.
+  // const [transactions, setTransactions] = useState(null);
   const dateRangeLabel = 'Date Range';
 
   return (

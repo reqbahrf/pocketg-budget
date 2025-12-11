@@ -2,6 +2,8 @@ import {
   PAYMENT_DISPLAY_NAMES,
   PaymentValue,
 } from '@/libs/constant/paymentOptions';
+import type { Transaction } from '@/libs/types/data';
+import { memo } from 'react';
 
 import {
   RiWalletLine,
@@ -16,31 +18,25 @@ import {
 } from '@/libs/constant/expenseOptions';
 import { formatDate } from '@/libs/utils/dateFormatter';
 
-export interface DetailedTransactionCardProps {
-  createdAt: string;
-  merchant: string;
-  category: CategoryValue;
-  paymentMethod: PaymentValue;
-  value: string;
-}
+export default memo(function DetailedTransactionCard(props: Transaction) {
+  const {
+    merchant,
+    amount,
+    transactionType,
+    paymentMethod,
+    createdAt,
+    category,
+    currency,
+  } = props;
+  const formatPaymentTypeName = (type: PaymentValue): string => {
+    return PAYMENT_DISPLAY_NAMES[type] || type;
+  };
 
-const formatPaymentTypeName = (type: PaymentValue): string => {
-  return PAYMENT_DISPLAY_NAMES[type] || type;
-};
-
-const formatCategoryTypeName = (type: CategoryValue): string => {
-  return CATEGORY_DISPLAY_NAMES[type] || type;
-};
-
-export default function DetailedTransactionCard({
-  createdAt,
-  merchant,
-  category,
-  paymentMethod,
-  value,
-}: DetailedTransactionCardProps) {
-  const mapPaymentTypeToIcon = (paymentType: PaymentValue) => {
-    switch (paymentType) {
+  const formatCategoryTypeName = (type: CategoryValue): string => {
+    return CATEGORY_DISPLAY_NAMES[type] || type;
+  };
+  const mapPaymentTypeToIcon = () => {
+    switch (paymentMethod) {
       case 'cash':
         return <RiWalletLine />;
       case 'ewallet':
@@ -54,8 +50,31 @@ export default function DetailedTransactionCard({
         return <RiMoreLine />;
     }
   };
-  const isIncome = value.startsWith('+');
-  const valueColor = isIncome ? 'text-green-400' : 'text-red-400';
+
+  const amountFormatter = (): string => {
+    const amountWithCurrency = `${currency} ${amount}`;
+    switch (transactionType) {
+      case 'expense':
+        return `- ${amountWithCurrency}`;
+      case 'income':
+        return `+ ${amountWithCurrency}`;
+      case 'saving':
+        return `- ${amountWithCurrency}`;
+      case 'transfer':
+        return `→ ${amountWithCurrency}`;
+      default:
+        return '';
+    }
+  };
+
+  const formattedAmount = amountFormatter();
+  const isIncome = formattedAmount.startsWith('+');
+  const isTransfer = formattedAmount.startsWith('→');
+  const valueColor = isIncome
+    ? 'text-green-400'
+    : isTransfer
+    ? 'text-gray-400'
+    : 'text-red-400';
 
   const paymentTypeName = formatPaymentTypeName(paymentMethod);
 
@@ -75,7 +94,7 @@ export default function DetailedTransactionCard({
           </span>
           {/* Payment Type Badge */}
           <span className='flex items-center gap-1 text-sm text-gray-300'>
-            {mapPaymentTypeToIcon(paymentMethod)}
+            {mapPaymentTypeToIcon()}
             {paymentTypeName}
           </span>
         </div>
@@ -83,8 +102,10 @@ export default function DetailedTransactionCard({
 
       {/* Right Section: Value */}
       <div className='text-right'>
-        <span className={`font-bold text-lg ${valueColor}`}>{value}</span>
+        <span className={`font-bold text-lg ${valueColor}`}>
+          {formattedAmount}
+        </span>
       </div>
     </li>
   );
-}
+});

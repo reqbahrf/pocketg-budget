@@ -3,7 +3,7 @@ export const CURRENCIES_SIGN: Array<{
   value: string;
   isDefault?: boolean;
 }> = [
-  { optionName: 'Philippine Peso (₱)', value: 'PHP', isDefault: true },
+  { optionName: 'Philippine Peso (₱)', value: 'PHP' },
   { optionName: 'United States Dollar ($)', value: 'USD' },
   { optionName: 'Euro (€)', value: 'EUR' },
   { optionName: 'Japanese Yen (¥)', value: 'JPY' },

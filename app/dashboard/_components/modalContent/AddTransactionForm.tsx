@@ -34,7 +34,7 @@ export default function AddTransactionForm() {
     }),
     createdAt: '',
     notes: '',
-    currency: '',
+    currency: 'PHP',
   });
 
   const handleInputChange = (

@@ -39,5 +39,5 @@ export interface SyncMeta {
 
 export type AddTransactionPayload = Omit<
   Transaction,
-  'uuid' | 'createdAt' | 'updatedAt' | 'status'
+  'uuid' | 'updatedAt' | 'status'
 >;

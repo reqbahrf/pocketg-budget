@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { ThemeProvider } from 'next-themes';
 import { ModalProvider } from 'ram-react-modal';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { Toaster } from 'react-hot-toast';
 import './globals.css';
 
 const geistSans = Geist({
@@ -39,6 +40,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ModalProvider>{children}</ModalProvider>
+          <Toaster position='top-right' />
         </ThemeProvider>
       </body>
     </html>

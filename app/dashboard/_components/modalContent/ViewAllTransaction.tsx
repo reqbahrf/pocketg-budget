@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Input from '@/components/Input/Input';
 import Select, { Option } from '@/components/Input/Select';
 import { CATEGORY_OPTIONS } from '@/libs/constant/expenseOptions';
-import DetailedTransactionCard from '../DetailedTransactionCard';
 import PAYMENT_OPTION from '@/libs/constant/paymentOptions';
+import MinimalMain from '../transactionCard/MinimalMain';
 import { getAllTransactions } from '@/libs/indexDB/crudOperations';
 import {
   RiSearchLine,
@@ -151,7 +151,7 @@ export default function ViewAllTransaction() {
           </div>
         ) : (
           transactions.map((item) => (
-            <DetailedTransactionCard
+            <MinimalMain
               key={item.uuid}
               {...item}
             />

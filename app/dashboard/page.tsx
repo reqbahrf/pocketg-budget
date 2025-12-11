@@ -25,7 +25,7 @@ const DonutChart = dynamic(() => import('./_components/DonutChart'), {
 });
 export default function Dashboard() {
   const { openModal } = useModalContext();
-  const AddExpenseTriggerRef = useRef<HTMLElement>(null);
+  const AddTransactionTriggerRef = useRef<HTMLElement>(null);
   const ViewAllTransactionRef = useRef<HTMLElement>(null);
   const exampleOverviewData = [
     {
@@ -94,7 +94,7 @@ export default function Dashboard() {
       bodyColor: 'dark:bg-brand-dark brand-light',
       size: 'md-f-h',
       content: <AddExpenseForm />,
-      triggerRef: AddExpenseTriggerRef,
+      triggerRef: AddTransactionTriggerRef,
       onBeforeClosing: {
         noticeType: 'warn',
         textContent: 'Are you sure you want to close this modal?',
@@ -113,11 +113,11 @@ export default function Dashboard() {
   const actionBtn = [
     {
       btnIcon: <RiAddLine />,
-      btnName: 'Add Expense',
+      btnName: 'Add Transaction',
       btnClass:
         'bg-brand-primary text-black hover:ring-2 hover:ring-brand-primary',
       action: handleOpenAddExpenseModal,
-      triggerBtnRef: AddExpenseTriggerRef,
+      triggerBtnRef: AddTransactionTriggerRef,
     },
     {
       btnIcon: <RiReceiptFill />,

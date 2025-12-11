@@ -153,11 +153,7 @@ export default function ViewAllTransaction() {
           transactions.map((item) => (
             <DetailedTransactionCard
               key={item.uuid}
-              createdAt={item.createdAt}
-              merchant={item.merchant}
-              category={item.category}
-              paymentMethod={item.paymentMethod}
-              value={item.amount}
+              {...item}
             />
           ))
         )}

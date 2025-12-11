@@ -53,12 +53,17 @@ export default function AddTransactionForm() {
   const handleOnSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // const combineDateTimeToISO = (date: string, time?:string) => {
+    const { dateCreated, timeCreated, ...rest } = formData;
+    const date = `${dateCreated}T${timeCreated}:00`;
 
-    //   const combined  = `${date}T${time}:00`;
-    //   return new Date(combined).toISOString();
-    // }
-    addTransaction(formData).then(console.log).catch(console.error);
+    const combineDateTimeToISO = new Date(date).toISOString();
+
+    const data = { ...rest, createdAt: combineDateTimeToISO };
+    toast.promise(addTransaction(data), {
+      loading: 'Adding transaction...',
+      success: 'Transaction added successfully',
+      error: 'Failed to add transaction',
+    });
   };
 
   return (

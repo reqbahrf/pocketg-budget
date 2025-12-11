@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { RiEyeLine, RiEyeCloseLine } from '@remixicon/react';
 import Input from '@/components/Input/Input';
+import Button from '@/components/Button';
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -201,12 +202,12 @@ export default function SignUp() {
 
           {/* Submit Button */}
           <div>
-            <button
+            <Button
               type='submit'
-              className='w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-black bg-brand-primary hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
+              className='text-black bg-brand-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary'
             >
               Create Account
-            </button>
+            </Button>
           </div>
         </form>
 

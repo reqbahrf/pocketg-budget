@@ -2,6 +2,7 @@
 import OverviewCard from './_components/OverviewCard';
 import AddExpenseForm from './_components/modalContent/AddTransactionForm';
 import ViewAllTransaction from './_components/modalContent/ViewAllTransaction';
+import Button from '@/components/Button';
 import {
   RiSparklingFill,
   RiAddLine,
@@ -113,21 +114,24 @@ export default function Dashboard() {
     {
       btnIcon: <RiAddLine />,
       btnName: 'Add Expense',
-      btnClass: 'bg-brand-primary text-black',
+      btnClass:
+        'bg-brand-primary text-black hover:ring-2 hover:ring-brand-primary',
       action: handleOpenAddExpenseModal,
       triggerBtnRef: AddExpenseTriggerRef,
     },
     {
       btnIcon: <RiReceiptFill />,
       btnName: 'View All Transactions',
-      btnClass: 'bg-brand-secondary text-white',
+      btnClass:
+        'bg-brand-secondary text-white hover:ring-2 hover:ring-brand-secondary',
       action: handleOpenViewAllTransactions,
       triggerBtnRef: ViewAllTransactionRef,
     },
     {
       btnIcon: <RiBarChart2Fill />,
       btnName: 'Detailed Analytics',
-      btnClass: 'bg-brand-secondary text-white',
+      btnClass:
+        'bg-brand-secondary text-white hover:ring-2 hover:ring-brand-secondary',
     },
   ];
 
@@ -147,18 +151,18 @@ export default function Dashboard() {
     triggerBtnRef,
   }) => {
     return (
-      <button
+      <Button
         ref={(e) => {
           if (triggerBtnRef !== undefined) {
             triggerBtnRef.current = e;
           }
         }}
         type='button'
-        className={`${btnClass} w-full flex justify-center items-center py-2 px-4 border border-transparent rounded-2xl shadow-sm text-sm font-medium cursor-pointer`}
+        className={btnClass}
         onClick={action}
       >
         <span>{btnIcon}</span>&nbsp;{btnName}
-      </button>
+      </Button>
     );
   };
   return (

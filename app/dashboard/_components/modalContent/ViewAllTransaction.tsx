@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Input from '@/components/Input/Input';
 import Select, { Option } from '@/components/Input/Select';
 import { CATEGORY_OPTIONS } from '@/libs/constant/expenseOptions';
 import DetailedTransactionCard from '../DetailedTransactionCard';
 import PAYMENT_OPTION from '@/libs/constant/paymentOptions';
-import mockTransactions from '@/libs/sample/transactionData';
+import { getAllTransactions } from '@/libs/indexDB/crudOperations';
 import {
   RiSearchLine,
   RiPriceTag3Line,
@@ -12,6 +12,7 @@ import {
   RiCalendarLine,
   RiArrowDownSLine,
 } from '@remixicon/react';
+import { Transaction } from '@/libs/types/data';
 
 // A styled container for the icon, text, and select/input elements
 type FilterControlProps = {
@@ -80,8 +81,16 @@ const SelectWrapper: React.FC<{
 );
 
 export default function ViewAllTransaction() {
-  // const [transactions, setTransactions] = useState(null);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [loading, setLoading] = useState(true);
   const dateRangeLabel = 'Date Range';
+
+  useEffect(() => {
+    getAllTransactions()
+      .then(setTransactions)
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <div className='w-full p-4'>
@@ -132,12 +141,26 @@ export default function ViewAllTransaction() {
         </FilterControl>
       </div>
       <ol className='flex flex-col gap-2 md:gap-4 mt-12 mb-4 max-h-[65dvh] overflow-y-scroll'>
-        {mockTransactions.map((item, i) => (
-          <DetailedTransactionCard
-            key={i}
-            {...item}
-          />
-        ))}
+        {loading ? (
+          <div className='flex items-center justify-center'>
+            retrieving data...
+          </div>
+        ) : transactions.length === 0 ? (
+          <div className='flex items-center justify-center'>
+            No transactions found
+          </div>
+        ) : (
+          transactions.map((item) => (
+            <DetailedTransactionCard
+              key={item.uuid}
+              createdAt={item.createdAt}
+              merchant={item.merchant}
+              category={item.category}
+              paymentMethod={item.paymentMethod}
+              value={item.amount}
+            />
+          ))
+        )}
       </ol>
     </div>
   );

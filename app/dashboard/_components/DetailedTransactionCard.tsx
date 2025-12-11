@@ -14,12 +14,13 @@ import {
   CATEGORY_DISPLAY_NAMES,
   CategoryValue,
 } from '@/libs/constant/expenseOptions';
+import { formatDate } from '@/libs/utils/dateFormatter';
 
-interface DetailedTransactionCardProps {
-  date: string;
-  title: string;
+export interface DetailedTransactionCardProps {
+  createdAt: string;
+  merchant: string;
   category: CategoryValue;
-  paymentType: PaymentValue;
+  paymentMethod: PaymentValue;
   value: string;
 }
 
@@ -32,10 +33,10 @@ const formatCategoryTypeName = (type: CategoryValue): string => {
 };
 
 export default function DetailedTransactionCard({
-  date,
-  title,
+  createdAt,
+  merchant,
   category,
-  paymentType,
+  paymentMethod,
   value,
 }: DetailedTransactionCardProps) {
   const mapPaymentTypeToIcon = (paymentType: PaymentValue) => {
@@ -56,15 +57,15 @@ export default function DetailedTransactionCard({
   const isIncome = value.startsWith('+');
   const valueColor = isIncome ? 'text-green-400' : 'text-red-400';
 
-  const paymentTypeName = formatPaymentTypeName(paymentType);
+  const paymentTypeName = formatPaymentTypeName(paymentMethod);
 
   return (
     <li className='flex justify-between items-center p-3 rounded-lg bg-green-900/50 hover:bg-green-900/70 transition-colors cursor-pointer border border-green-800/50 mb-2'>
       {/* Left Section: Details */}
       <div className='flex flex-col gap-1'>
         {/* Date and Title */}
-        <p className='text-xs text-gray-400'>{date}</p>
-        <h3 className='font-semibold text-white'>{title}</h3>
+        <p className='text-xs text-gray-400'>{formatDate(createdAt)}</p>
+        <h3 className='font-semibold text-white'>{merchant}</h3>
 
         {/* Category and Payment Type */}
         <div className='flex items-center gap-3 mt-1'>
@@ -74,7 +75,7 @@ export default function DetailedTransactionCard({
           </span>
           {/* Payment Type Badge */}
           <span className='flex items-center gap-1 text-sm text-gray-300'>
-            {mapPaymentTypeToIcon(paymentType)}
+            {mapPaymentTypeToIcon(paymentMethod)}
             {paymentTypeName}
           </span>
         </div>

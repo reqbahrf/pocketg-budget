@@ -14,7 +14,7 @@ export interface Transaction {
   amount: string;
   currency: string;
   notes?: string | null;
-  merchant?: string | null;
+  merchant: string;
   createdAt: string; // ISO string
   updatedAt: string; // ISO string
   status: Status;

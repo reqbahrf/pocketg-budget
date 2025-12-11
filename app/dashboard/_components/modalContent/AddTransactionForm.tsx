@@ -24,8 +24,13 @@ export default function AddTransactionForm() {
     paymentMethod: 'cash',
     category: 'foodAndDrinks',
     merchant: '',
-    dateCreated: '',
-    timeCreated: '',
+    dateCreated: new Date().toISOString().split('T')[0],
+    timeCreated: new Date().toLocaleTimeString('en-US', {
+      hour12: false,
+      hour: '2-digit',
+      minute: '2-digit',
+    }),
+    createdAt: '',
     notes: '',
     currency: '',
   });
@@ -127,11 +132,7 @@ export default function AddTransactionForm() {
               type='date'
               name='dateCreated'
               onChange={handleInputChange}
-              value={
-                formData.dateCreated
-                  ? formData.dateCreated
-                  : new Date().toISOString().split('T')[0]
-              }
+              value={formData.dateCreated}
               label='Date'
             />
           </div>
@@ -140,15 +141,7 @@ export default function AddTransactionForm() {
               type='time'
               name='timeCreated'
               onChange={handleInputChange}
-              value={
-                formData.timeCreated
-                  ? formData.timeCreated
-                  : new Date().toLocaleTimeString('en-US', {
-                      hour12: false,
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })
-              }
+              value={formData.timeCreated}
               label='Time'
             />
           </div>

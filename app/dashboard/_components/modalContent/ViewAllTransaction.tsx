@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { useTransactionStore } from '@/libs/stores/transactionStore';
 import Input from '@/components/Input/Input';
 import Select, { Option } from '@/components/Input/Select';
 import { CATEGORY_OPTIONS } from '@/libs/constant/expenseOptions';
 import PAYMENT_OPTION from '@/libs/constant/paymentOptions';
 import MinimalMain from '../transactionCard/MinimalMain';
-import { getAllTransactions } from '@/libs/indexDB/crudOperations';
 import {
   RiSearchLine,
   RiPriceTag3Line,
@@ -12,7 +12,7 @@ import {
   RiCalendarLine,
   RiArrowDownSLine,
 } from '@remixicon/react';
-import { Transaction } from '@/libs/types/data';
+import toast from 'react-hot-toast';
 
 // A styled container for the icon, text, and select/input elements
 type FilterControlProps = {
@@ -81,16 +81,15 @@ const SelectWrapper: React.FC<{
 );
 
 export default function ViewAllTransaction() {
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { transactions, loading, fetchTransactions } = useTransactionStore();
+
   const dateRangeLabel = 'Date Range';
 
   useEffect(() => {
-    getAllTransactions()
-      .then(setTransactions)
-      .catch(console.error)
-      .finally(() => setLoading(false));
-  }, []);
+    fetchTransactions().catch((error) =>
+      toast.error(error || 'Unable to Retrieve Transactions')
+    );
+  }, [fetchTransactions]);
 
   return (
     <div className='w-full p-4'>

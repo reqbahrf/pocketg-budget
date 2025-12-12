@@ -234,7 +234,7 @@ export default function Dashboard() {
             <h2 className='text-xl'>Recent Activity</h2>
             <button
               type='button'
-              className='text-brand-primary text-sm'
+              className='text-brand-primary text-sm  '
             >
               View All
             </button>

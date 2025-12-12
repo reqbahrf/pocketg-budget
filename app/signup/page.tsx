@@ -204,7 +204,7 @@ export default function SignUp() {
           <div>
             <Button
               type='submit'
-              className='text-black bg-brand-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary'
+              className='text-black bg-brand-primary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary py-2 px-4'
             >
               Create Account
             </Button>

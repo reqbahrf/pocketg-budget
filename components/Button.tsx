@@ -21,7 +21,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={setRefs}
         {...rest}
-        className={`${className} w-full flex justify-center items-center py-2 px-4 border border-transparent rounded-2xl shadow-sm cursor-pointer`}
+        className={`${className} w-full flex justify-center items-center border border-transparent rounded-2xl shadow-sm cursor-pointer`}
       >
         {children}
       </button>

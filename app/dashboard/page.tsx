@@ -158,7 +158,7 @@ export default function Dashboard() {
           }
         }}
         type='button'
-        className={btnClass}
+        className={`${btnClass} py-2 px-4`}
         onClick={action}
       >
         <span>{btnIcon}</span>&nbsp;{btnName}

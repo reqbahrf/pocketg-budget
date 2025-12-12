@@ -123,7 +123,12 @@ export default memo(function MinimalMain(props: MininalMainProps) {
           </span>
         </div>
       </div>
-      {showDetails && <DetailedDropdown {...rest} />}
+      {showDetails && (
+        <DetailedDropdown
+          {...rest}
+          originalValue={props}
+        />
+      )}
       <button
         type='button'
         onClick={toggleShowDetails}

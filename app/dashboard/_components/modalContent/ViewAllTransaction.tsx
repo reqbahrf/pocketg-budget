@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTransactionStore } from '@/libs/stores/transactionStore';
 import Input from '@/components/Input/Input';
 import Select, { Option } from '@/components/Input/Select';
@@ -82,8 +82,9 @@ const SelectWrapper: React.FC<{
 
 export default function ViewAllTransaction() {
   const { transactions, loading, fetchTransactions } = useTransactionStore();
-
-  const dateRangeLabel = 'Date Range';
+  const [currentViewTransaction, setCurrentViewTransaction] = useState<
+    string | null
+  >(null);
 
   useEffect(() => {
     fetchTransactions().catch((error) =>
@@ -91,6 +92,9 @@ export default function ViewAllTransaction() {
     );
   }, [fetchTransactions]);
 
+  const handleViewTransaction = useCallback((uuid: string) => {
+    setCurrentViewTransaction((prevId) => (prevId === uuid ? null : uuid));
+  }, []);
   return (
     <div className='w-full p-4'>
       {/* Header Section */}
@@ -134,7 +138,7 @@ export default function ViewAllTransaction() {
             we treat it as a styled filter button, similar to the SelectWrapper visually. */}
         <FilterControl
           icon={RiCalendarLine}
-          label={dateRangeLabel}
+          label='Date Range'
         >
           <RiArrowDownSLine className='w-5 h-5 text-white' />
         </FilterControl>
@@ -149,12 +153,19 @@ export default function ViewAllTransaction() {
             No transactions found
           </div>
         ) : (
-          transactions.map((item) => (
-            <MinimalMain
-              key={item.uuid}
-              {...item}
-            />
-          ))
+          transactions.map((item) => {
+            // if (item.status === 'deleted') {
+            //   return null;
+            // }
+            return (
+              <MinimalMain
+                key={item.uuid}
+                {...item}
+                active={currentViewTransaction === item.uuid}
+                onExpand={handleViewTransaction}
+              />
+            );
+          })
         )}
       </ol>
     </div>

@@ -3,7 +3,7 @@ import {
   PaymentValue,
 } from '@/libs/constant/paymentOptions';
 import type { Transaction } from '@/libs/types/data';
-import { memo, useState } from 'react';
+import { memo } from 'react';
 
 import {
   RiWalletLine,
@@ -20,14 +20,17 @@ import {
 } from '@/libs/constant/expenseOptions';
 import { formatDate } from '@/libs/utils/dateFormatter';
 import DetailedDropdown from './DetailedDropdown';
+import { useTransactionStore } from '@/libs/stores/transactionStore';
 
 export type MininalMainProps = Omit<
   Transaction,
   'userId' | 'syncedAt' | 'deviceId'
->;
+> & {
+  active?: boolean;
+  onExpand?: (uuid: string) => void;
+};
 
 export default memo(function MinimalMain(props: MininalMainProps) {
-  const [showDetails, setShowDetails] = useState(false);
   const {
     merchant,
     amount,
@@ -36,6 +39,8 @@ export default memo(function MinimalMain(props: MininalMainProps) {
     createdAt,
     category,
     currency,
+    active = false,
+    onExpand,
     ...rest
   } = props;
   const formatPaymentTypeName = (type: PaymentValue): string => {
@@ -90,7 +95,7 @@ export default memo(function MinimalMain(props: MininalMainProps) {
 
   const toggleShowDetails = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setShowDetails((prev) => !prev);
+    onExpand?.(props.uuid);
   };
 
   return (
@@ -123,7 +128,7 @@ export default memo(function MinimalMain(props: MininalMainProps) {
           </span>
         </div>
       </div>
-      {showDetails && (
+      {active && (
         <DetailedDropdown
           {...rest}
           originalValue={props}
@@ -134,11 +139,7 @@ export default memo(function MinimalMain(props: MininalMainProps) {
         onClick={toggleShowDetails}
         className='absolute -bottom-4 right-2 text-sm md:text-lg'
       >
-        {showDetails ? (
-          <RiArrowUpSLine size={35} />
-        ) : (
-          <RiArrowDownSLine size={35} />
-        )}
+        {active ? <RiArrowUpSLine size={35} /> : <RiArrowDownSLine size={35} />}
       </button>
     </li>
   );

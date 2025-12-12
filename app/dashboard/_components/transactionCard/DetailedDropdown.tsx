@@ -2,10 +2,11 @@ import type { MininalMainProps } from './MinimalMain';
 import { formatDate } from '@/libs/utils/dateFormatter';
 import Button from '@/components/Button';
 import { Transaction } from '@/libs/types/data';
-// import { deleteTransaction } from '@/libs/indexDB/crudOperations';
-// import { useModalContext } from 'ram-react-modal';
-// import toast from 'react-hot-toast';
+import { useModalContext } from 'ram-react-modal';
+import { useTransactionStore } from '@/libs/stores/transactionStore';
+import toast from 'react-hot-toast';
 import { RiEdit2Fill, RiDeleteBin2Fill } from '@remixicon/react';
+import Delete from '@/components/notice/Delete';
 type DetailedDropdownProps = Omit<
   MininalMainProps,
   | 'merchant'
@@ -21,20 +22,39 @@ type DetailedDropdownProps = Omit<
 export default function DetailedDropdown(props: DetailedDropdownProps) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { uuid, notes, updatedAt, originalValue } = props;
-  // const { openModal } = useModalContext();
+  const { openModal, closeModal } = useModalContext();
+  const { deleteTransaction } = useTransactionStore();
 
   const handleEditTransaction = () => {};
 
-  const handleDeleteTransaction = async () => {
+  const handleDeleteTransaction = () => {
     try {
-      // openModal({
-      //   content: 'Are you sure you want to delete this Transaction?',
-      // });
-      // await toast.promise(deleteTransaction(uuid), {
-      //   loading: 'Deleting transaction...',
-      //   success: 'Transaction deleted successfully',
-      //   error: 'Failed to delete transaction',
-      // });
+      openModal({
+        title: 'Delete Transaction',
+        headerColor: 'bg-red-500',
+        size: 'sm',
+        content: (
+          <Delete
+            onCancel={() => closeModal()}
+            onConfirm={() => {
+              toast
+                .promise(deleteTransaction(uuid), {
+                  loading: 'Deleting transaction...',
+                  success: 'Transaction deleted successfully',
+                  error: 'Failed to delete transaction',
+                })
+                .then(() => closeModal());
+            }}
+          >
+            <>
+              You are about to delete Transaction{' '}
+              <span className='font-semibold text-sm'>{uuid}</span>
+              <br />
+              Are you sure?
+            </>
+          </Delete>
+        ),
+      });
     } catch (error) {
       console.error(error);
     }

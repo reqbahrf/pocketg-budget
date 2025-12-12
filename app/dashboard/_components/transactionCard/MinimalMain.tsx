@@ -23,7 +23,7 @@ import DetailedDropdown from './DetailedDropdown';
 
 export type MininalMainProps = Omit<
   Transaction,
-  'uuid' | 'userId' | 'syncedAt' | 'deviceId'
+  'userId' | 'syncedAt' | 'deviceId'
 >;
 
 export default memo(function MinimalMain(props: MininalMainProps) {

@@ -1,7 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useTransactionStore } from '@/libs/stores/transactionStore';
 import Input from '@/components/Input/Input';
-import Select, { Option } from '@/components/Input/Select';
+import Select from '@/components/Input/Select';
 import { CATEGORY_OPTIONS } from '@/libs/constant/expenseOptions';
 import PAYMENT_OPTION from '@/libs/constant/paymentOptions';
 import MinimalMain from '../transactionCard/MinimalMain';
@@ -55,28 +61,16 @@ const FilterControl: React.FC<FilterControlProps> = ({
   );
 };
 
-// Component to wrap the Select, making it invisible but functional inside the FilterControl
 const SelectWrapper: React.FC<{
-  options: Option[];
+  children: ReactNode;
   label: string;
   icon: React.ElementType;
-}> = ({ options, label, icon }) => (
+}> = ({ children, label, icon }) => (
   <FilterControl
     icon={icon}
     label={label}
   >
-    <div className='relative flex items-center'>
-      {/* The actual Select element. We hide its default appearance (w-0 h-0) and use opacity to make it mostly invisible
-          while still being accessible for user interaction (especially the dropdown arrow functionality)
-          We will use RiArrowDownSLine for the visible dropdown indicator in the FilterControl wrapper.
-          The Select's default styling is overridden by the wrapper.
-          We need to add `appearance-none` to the select to remove the native dropdown arrow, which Tailwind doesn't usually do by default.
-      */}
-      <Select
-        options={options}
-        className='absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none'
-      />
-    </div>
+    <div className='relative flex items-center'>{children}</div>
   </FilterControl>
 );
 
@@ -85,6 +79,38 @@ export default function ViewAllTransaction() {
   const [currentViewTransaction, setCurrentViewTransaction] = useState<
     string | null
   >(null);
+  const [transactionFilter, setTransactionFilter] = useState({
+    search: '',
+    category: 'all',
+    paymentMethod: 'all',
+    dateRange: '',
+  });
+
+  const filteredTransactions = useMemo(() => {
+    let filtered = transactions;
+    let searchValue = transactionFilter.search;
+
+    if (searchValue) {
+      searchValue = searchValue.toLowerCase();
+      filtered = filtered.filter(
+        (t) =>
+          t?.notes?.toLowerCase().includes(searchValue) ||
+          t?.merchant?.toLowerCase().includes(searchValue)
+      );
+    }
+    if (transactionFilter.category !== 'all') {
+      filtered = filtered.filter(
+        (t) => t.category === transactionFilter.category
+      );
+    }
+    if (transactionFilter.paymentMethod !== 'all') {
+      filtered = filtered.filter(
+        (t) => t.paymentMethod === transactionFilter.paymentMethod
+      );
+    }
+
+    return filtered;
+  }, [transactionFilter, transactions]);
 
   useEffect(() => {
     fetchTransactions().catch((error) =>
@@ -95,6 +121,13 @@ export default function ViewAllTransaction() {
   const handleViewTransaction = useCallback((uuid: string) => {
     setCurrentViewTransaction((prevId) => (prevId === uuid ? null : uuid));
   }, []);
+
+  const handledFilterChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setTransactionFilter((prev) => ({ ...prev, [name]: value }));
+  };
   return (
     <div className='w-full p-4'>
       {/* Header Section */}
@@ -115,6 +148,8 @@ export default function ViewAllTransaction() {
           <Input
             placeholder='Search notes or description...'
             type='text'
+            name='search'
+            onChange={handledFilterChange}
             className='h-full px-0 border-0 focus:ring-0 bg-green-800 placeholder-gray-300'
           />
         </FilterControl>
@@ -123,15 +158,39 @@ export default function ViewAllTransaction() {
         <SelectWrapper
           label='Category'
           icon={RiPriceTag3Line}
-          options={CATEGORY_OPTIONS}
-        />
+        >
+          <Select
+            options={[
+              {
+                optionName: 'All',
+                value: 'all',
+              },
+              ...CATEGORY_OPTIONS,
+            ]}
+            name='category'
+            onChange={handledFilterChange}
+            className='absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none'
+          />
+        </SelectWrapper>
 
-        {/* Payment Type Select Filter */}
+        {/* Payment Method Select Filter */}
         <SelectWrapper
-          label='Payment Type'
+          label='Payment Method'
           icon={RiWalletLine}
-          options={PAYMENT_OPTION}
-        />
+        >
+          <Select
+            options={[
+              {
+                optionName: 'All',
+                value: 'all',
+              },
+              ...PAYMENT_OPTION,
+            ]}
+            name='paymentMethod'
+            onChange={handledFilterChange}
+            className='absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none'
+          />
+        </SelectWrapper>
 
         {/* Date Range Button/Select */}
         {/* For the Date Range, since we don't have a specific date picker component,
@@ -152,8 +211,12 @@ export default function ViewAllTransaction() {
           <div className='flex items-center justify-center'>
             No transactions found
           </div>
+        ) : filteredTransactions.length === 0 ? (
+          <div className='flex items-center justify-center'>
+            No Result found
+          </div>
         ) : (
-          transactions.map((item) => {
+          filteredTransactions.map((item) => {
             // if (item.status === 'deleted') {
             //   return null;
             // }

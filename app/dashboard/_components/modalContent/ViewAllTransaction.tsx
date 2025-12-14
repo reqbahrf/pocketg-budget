@@ -6,18 +6,25 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import dynamic from 'next/dynamic';
 import { useTransactionStore } from '@/libs/stores/transactionStore';
 import Input from '@/components/Input/Input';
 import Select from '@/components/Input/Select';
 import { CATEGORY_OPTIONS } from '@/libs/constant/expenseOptions';
 import PAYMENT_OPTION from '@/libs/constant/paymentOptions';
-import MinimalMain from '../transactionCard/MinimalMain';
+const MinimalMain = dynamic(() => import('../transactionCard/MinimalMain'), {
+  ssr: false,
+  loading: () => (
+    <li className='animate-pulse relative p-3 rounded-lg bg-brand-primary/20 hover:bg-brand-primary/10 transition-colors cursor-pointer border border-green-800/50 mb-2 h-24 w-full'></li>
+  ),
+});
 import {
   RiSearchLine,
   RiPriceTag3Line,
   RiWalletLine,
   RiCalendarLine,
   RiArrowDownSLine,
+  RiSortDesc,
 } from '@remixicon/react';
 import toast from 'react-hot-toast';
 
@@ -232,6 +239,27 @@ export default function ViewAllTransaction() {
             className='h-full px-0 outline-0 border-0 focus:ring-0 bg-brand-primary/20! placeholder-gray-300'
           />
         </FilterControl>
+
+        <SelectWrapper
+          label='Sort by'
+          icon={RiSortDesc}
+        >
+          <Select
+            options={[
+              {
+                optionName: 'Descending',
+                value: 'desc',
+              },
+              {
+                optionName: 'Ascending',
+                value: 'asc',
+              },
+            ]}
+            name='orderBy'
+            onChange={handledFilterChange}
+            className='outline-0 border-0! inset-0 cursor-pointer bg-brand-primary/20!'
+          />
+        </SelectWrapper>
 
         {/* Category Select Filter */}
         <SelectWrapper

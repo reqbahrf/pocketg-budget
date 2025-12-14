@@ -21,7 +21,6 @@ import {
 } from '@remixicon/react';
 import toast from 'react-hot-toast';
 
-// A styled container for the icon, text, and select/input elements
 type FilterControlProps = {
   icon: React.ElementType;
   children: React.ReactNode;
@@ -36,7 +35,7 @@ const FilterControl: React.FC<FilterControlProps> = ({
   isInput = false,
 }) => {
   const baseClasses =
-    'bg-green-800 text-white rounded-lg flex items-center shadow-md cursor-pointer transition duration-150 ease-in-out';
+    'bg-brand-secondary text-white rounded-lg flex items-center shadow-md cursor-pointer transition duration-150 ease-in-out';
 
   if (isInput) {
     // For the Search Input, the input takes up the full width
@@ -51,7 +50,7 @@ const FilterControl: React.FC<FilterControlProps> = ({
   // For Selects or Date Range Button
   return (
     <div
-      className={`${baseClasses} px-4 py-2 h-12 min-w-[150px] space-x-2 justify-between`}
+      className={`${baseClasses} px-4 py-2 h-12 min-w-48 space-x-2 justify-between`}
     >
       <div className='flex items-center space-x-2'>
         <Icon className='w-5 h-5' />
@@ -172,14 +171,14 @@ export default function ViewAllTransaction() {
     <div className='w-full p-4'>
       {/* Header Section */}
       <header className='mb-6 text-white'>
-        <h1 className='text-3xl font-bold'>All Transactions</h1>
+        <h1 className='md:text-3xl text-xl font-bold'>All Transactions</h1>
         <p className='mt-1 text-gray-500'>
           Review your spending history and filter your transactions.
         </p>
       </header>
 
       {/* Filter Bar Section */}
-      <div className='flex flex-wrap items-center gap-3'>
+      <section className='flex flex-wrap justify-center items-center gap-2 md:gap-3'>
         {/* Search Input Filter */}
         <FilterControl
           icon={RiSearchLine}
@@ -190,7 +189,7 @@ export default function ViewAllTransaction() {
             type='text'
             name='search'
             onChange={handledFilterChange}
-            className='h-full px-0 border-0 focus:ring-0 bg-green-800 placeholder-gray-300'
+            className='h-full px-0 outline-0 border-0 focus:ring-0 bg-brand-primary/20! placeholder-gray-300'
           />
         </FilterControl>
 
@@ -209,7 +208,7 @@ export default function ViewAllTransaction() {
             ]}
             name='category'
             onChange={handledFilterChange}
-            className='absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none'
+            className='outline-0 border-0! inset-0 cursor-pointer bg-brand-primary/20!'
           />
         </SelectWrapper>
 
@@ -228,7 +227,7 @@ export default function ViewAllTransaction() {
             ]}
             name='paymentMethod'
             onChange={handledFilterChange}
-            className='absolute inset-0 w-full h-full opacity-0 cursor-pointer appearance-none'
+            className='outline-0 border-0! inset-0 cursor-pointer bg-brand-primary/20!'
           />
         </SelectWrapper>
 

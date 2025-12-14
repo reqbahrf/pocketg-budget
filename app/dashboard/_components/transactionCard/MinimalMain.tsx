@@ -12,7 +12,6 @@ import {
   RiMoreLine,
   RiBankLine,
   RiArrowDownSLine,
-  RiArrowUpSLine,
 } from '@remixicon/react';
 import {
   CATEGORY_DISPLAY_NAMES,
@@ -20,7 +19,6 @@ import {
 } from '@/libs/constant/expenseOptions';
 import { formatDate } from '@/libs/utils/dateFormatter';
 import DetailedDropdown from './DetailedDropdown';
-import { useTransactionStore } from '@/libs/stores/transactionStore';
 
 export type MininalMainProps = Omit<
   Transaction,
@@ -99,7 +97,7 @@ export default memo(function MinimalMain(props: MininalMainProps) {
   };
 
   return (
-    <li className='relative p-3 rounded-lg bg-green-900/50 hover:bg-green-900/70 transition-colors cursor-pointer border border-green-800/50 mb-2'>
+    <li className='relative p-3 rounded-lg bg-brand-primary/20 hover:bg-brand-primary/10 transition-colors cursor-pointer border border-green-800/50 mb-2'>
       <div className='flex justify-between items-center'>
         {/* Left Section: Details */}
         <div className='flex flex-col gap-1'>
@@ -139,7 +137,10 @@ export default memo(function MinimalMain(props: MininalMainProps) {
         onClick={toggleShowDetails}
         className='absolute -bottom-4 right-2 text-sm md:text-lg'
       >
-        {active ? <RiArrowUpSLine size={35} /> : <RiArrowDownSLine size={35} />}
+        <RiArrowDownSLine
+          size={35}
+          style={{ transform: `rotate(${active ? -180 : 0}deg)` }}
+        />
       </button>
     </li>
   );

@@ -83,6 +83,7 @@ const DateRangePicker = ({
   from: DateInputAttributes;
   to: DateInputAttributes;
 }) => {
+  console.log(from, to);
   return (
     <div className='bg-brand-secondary flex fixed items-center gap-4 rounded-lg border p-3 shadow-sm z-50'>
       <div className='flex flex-col gap-1'>
@@ -117,13 +118,46 @@ export default function ViewAllTransaction() {
     search: '',
     category: 'all',
     paymentMethod: 'all',
-    dateRange: '',
+    orderBy: 'decs',
+    dateRange: ['', ''],
   });
   const [showDateRangePicker, setShowDateRangePicker] = useState(false);
 
   const handleShowDateRangePicker = () => {
     setShowDateRangePicker((prev) => !prev);
   };
+
+  const handleDateRangeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (name !== 'from' && name !== 'to') return;
+    setTransactionFilter((prev) => ({
+      ...prev,
+      dateRange: [
+        name === 'from' ? value : prev.dateRange[0],
+        name === 'to' ? value : prev.dateRange[1],
+      ],
+    }));
+  };
+
+  const dateRange = useMemo(() => {
+    if (!transactions.length) {
+      return { minDate: null, maxDate: null };
+    }
+
+    let minDate = transactions[0].createdAt;
+    let maxDate = transactions[0].createdAt;
+
+    for (let i = 1; i < transactions.length; i++) {
+      const date = transactions[i].createdAt;
+
+      if (date < minDate) minDate = date;
+      if (date > maxDate) maxDate = date;
+    }
+    minDate = minDate.split('T')[0];
+    maxDate = maxDate.split('T')[0];
+
+    return { minDate, maxDate };
+  }, [transactions]);
 
   const filteredTransactions = useMemo(() => {
     let filtered = transactions;
@@ -147,6 +181,12 @@ export default function ViewAllTransaction() {
         (t) => t.paymentMethod === transactionFilter.paymentMethod
       );
     }
+
+    filtered = [...filtered].sort((a, b) =>
+      transactionFilter.orderBy === 'asc'
+        ? a.createdAt.localeCompare(b.createdAt)
+        : b.createdAt.localeCompare(a.createdAt)
+    );
 
     return filtered;
   }, [transactionFilter, transactions]);
@@ -251,8 +291,18 @@ export default function ViewAllTransaction() {
       <div className='flex relative justify-center w-full md:justify-end mt-4'>
         <Activity mode={showDateRangePicker ? 'visible' : 'hidden'}>
           <DateRangePicker
-            from={{ value: transactionFilter.dateRange.split(' - ')[0] }}
-            to={{ value: transactionFilter.dateRange.split(' - ')[1] }}
+            from={{
+              min: dateRange?.minDate || '',
+              max: dateRange?.maxDate || '',
+              value: dateRange?.minDate || '',
+              onChange: handleDateRangeChange,
+            }}
+            to={{
+              min: dateRange?.minDate || '',
+              max: dateRange?.maxDate || '',
+              value: dateRange?.maxDate || '',
+              onChange: handleDateRangeChange,
+            }}
           />
         </Activity>
       </div>

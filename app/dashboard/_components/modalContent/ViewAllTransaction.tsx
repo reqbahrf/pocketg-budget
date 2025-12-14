@@ -57,11 +57,11 @@ const FilterControl: React.FC<FilterControlProps> = ({
   // For Selects or Date Range Button
   return (
     <div
-      className={`${baseClasses} px-4 py-2 h-12 min-w-48 space-x-2 justify-between`}
+      className={`${baseClasses} px-4 py-2 h-12 min-w-auto space-x-2 justify-between`}
     >
       <div className='flex items-center space-x-2'>
         <Icon className='w-5 h-5' />
-        <span>{label}</span>
+        <span className='text-sm'>{label}</span>
       </div>
       {children}
     </div>
@@ -90,7 +90,6 @@ const DateRangePicker = ({
   from: DateInputAttributes;
   to: DateInputAttributes;
 }) => {
-  console.log(from, to);
   return (
     <div className='bg-brand-secondary flex fixed items-center gap-4 rounded-lg border p-3 shadow-sm z-50'>
       <div className='flex flex-col gap-1'>

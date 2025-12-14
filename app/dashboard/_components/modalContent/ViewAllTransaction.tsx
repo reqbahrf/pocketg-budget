@@ -1,4 +1,5 @@
 import React, {
+  Activity,
   ReactNode,
   useCallback,
   useEffect,
@@ -74,6 +75,40 @@ const SelectWrapper: React.FC<{
   </FilterControl>
 );
 
+type DateInputAttributes = React.InputHTMLAttributes<HTMLInputElement>;
+
+const DateRangePicker = ({
+  from,
+  to,
+}: {
+  from: DateInputAttributes;
+  to: DateInputAttributes;
+}) => {
+  return (
+    <div className='bg-brand-secondary flex fixed items-center gap-4 rounded-lg border p-3 shadow-sm z-50'>
+      <div className='flex flex-col gap-1'>
+        <Input
+          type='date'
+          name='from'
+          label='From'
+          {...from}
+          className='w-40! bg-brand-primary/20! border-0! outline-0'
+        />
+      </div>
+      <span className='text-white'>—</span>
+      <div className='flex flex-col gap-1'>
+        <Input
+          type='date'
+          name='to'
+          label='To'
+          {...to}
+          className='w-40! bg-brand-primary/20!  border-0! outline-0'
+        />
+      </div>
+    </div>
+  );
+};
+
 export default function ViewAllTransaction() {
   const { transactions, loading, fetchTransactions } = useTransactionStore();
   const [currentViewTransaction, setCurrentViewTransaction] = useState<
@@ -85,6 +120,11 @@ export default function ViewAllTransaction() {
     paymentMethod: 'all',
     dateRange: '',
   });
+  const [showDateRangePicker, setShowDateRangePicker] = useState(false);
+
+  const handleShowDateRangePicker = () => {
+    setShowDateRangePicker((prev) => !prev);
+  };
 
   const filteredTransactions = useMemo(() => {
     let filtered = transactions;
@@ -199,10 +239,25 @@ export default function ViewAllTransaction() {
           icon={RiCalendarLine}
           label='Date Range'
         >
-          <RiArrowDownSLine className='w-5 h-5 text-white' />
+          <RiArrowDownSLine
+            onClick={handleShowDateRangePicker}
+            role='button'
+            style={{
+              transform: `rotate(${showDateRangePicker ? 180 : 0}deg)`,
+            }}
+            className='w-5 h-5 text-white transition-transform duration-200'
+          />
         </FilterControl>
+      </section>
+      <div className='flex relative justify-center w-full md:justify-end mt-4'>
+        <Activity mode={showDateRangePicker ? 'visible' : 'hidden'}>
+          <DateRangePicker
+            from={{ value: transactionFilter.dateRange.split(' - ')[0] }}
+            to={{ value: transactionFilter.dateRange.split(' - ')[1] }}
+          />
+        </Activity>
       </div>
-      <ol className='flex flex-col gap-2 md:gap-4 mt-12 mb-4 max-h-[65dvh] overflow-y-scroll'>
+      <ol className='flex flex-col gap-2 md:gap-4 mt-15 mb-4 max-h-[65dvh] overflow-y-scroll'>
         {loading ? (
           <div className='flex items-center justify-center'>
             retrieving data...

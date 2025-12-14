@@ -7,14 +7,14 @@ type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label?: string | ReactNode;
 };
 
-export default function Input(props: InputProps) {
+export default function Input({ className, ...rest }: InputProps) {
   return (
     <>
-      {props.label && <Label htmlFor={props?.name}>{props?.label}</Label>}
+      {rest.label && <Label htmlFor={rest?.name}>{rest?.label}</Label>}
       <input
-        {...props}
-        id={props?.name}
-        className='w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-primary focus:brand-primary bg-brand-secondary dark:border-gray-600 dark:text-white'
+        {...rest}
+        id={rest?.name}
+        className={`w-full px-4 py-2 border rounded-lg shadow-sm focus:ring-brand-primary focus:brand-primary bg-brand-secondary dark:border-gray-600 dark:text-white ${className}`}
       />
     </>
   );

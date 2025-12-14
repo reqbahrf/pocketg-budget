@@ -10,13 +10,17 @@ type SelectInputProps = React.SelectHTMLAttributes<HTMLSelectElement> & {
   options: Option[];
   label?: string | React.ReactNode;
 };
-export default function Select({ options, ...rest }: SelectInputProps) {
+export default function Select({
+  className,
+  options,
+  ...rest
+}: SelectInputProps) {
   return (
     <>
       {rest.label && <Label htmlFor={rest?.name}>{rest?.label}</Label>}
       <select
         {...rest}
-        className='w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-primary focus:brand-primary bg-brand-secondary dark:border-gray-600 dark:text-white'
+        className={`w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-primary focus:brand-primary bg-brand-secondary dark:border-gray-600 dark:text-white ${className}`}
       >
         {options.map((o, i) => (
           <option

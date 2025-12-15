@@ -14,7 +14,8 @@ async function addTransaction(tx: AddTransactionPayload) {
   const full: Transaction = {
     uuid,
     ...tx,
-    createdAt: tx.createdAt,
+    transactionDate: tx.transactionDate,
+    createdAt: now,
     updatedAt: now,
     status: 'active',
     syncedAt: null,

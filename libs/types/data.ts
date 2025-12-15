@@ -15,6 +15,7 @@ export interface Transaction {
   currency: string;
   notes?: string | null;
   merchant: string;
+  transactionDate: string;
   createdAt: string; // ISO string
   updatedAt: string; // ISO string
   status: Status;
@@ -39,5 +40,5 @@ export interface SyncMeta {
 
 export type AddTransactionPayload = Omit<
   Transaction,
-  'uuid' | 'updatedAt' | 'status'
+  'uuid' | 'createdAt' | 'updatedAt' | 'status'
 >;

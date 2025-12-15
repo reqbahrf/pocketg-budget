@@ -1,6 +1,6 @@
 'use client';
 import OverviewCard from './_components/OverviewCard';
-import AddExpenseForm from './_components/modalContent/AddTransactionForm';
+import AddExpenseForm from './_components/modalContent/TransactionForm';
 import ViewAllTransaction from './_components/modalContent/ViewAllTransaction';
 import Button from '@/components/Button';
 import {
@@ -91,7 +91,7 @@ export default function Dashboard() {
 
   const handleOpenAddExpenseModal = () => {
     openModal({
-      bodyColor: 'dark:bg-brand-dark brand-light',
+      bodyColor: 'dark:bg-brand-dark',
       size: 'md-f-h',
       content: <AddExpenseForm />,
       triggerRef: AddTransactionTriggerRef,
@@ -104,7 +104,7 @@ export default function Dashboard() {
 
   const handleOpenViewAllTransactions = () => {
     openModal({
-      bodyColor: 'dark:bg-brand-dark brand-light',
+      bodyColor: 'dark:bg-brand-dark',
       size: 'full',
       content: <ViewAllTransaction />,
       triggerRef: ViewAllTransactionRef,

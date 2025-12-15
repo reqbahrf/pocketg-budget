@@ -5,37 +5,65 @@ import CURRENCIES_SIGN from '@/libs/constant/currenciesSign';
 import PAYMENT_OPTION from '@/libs/constant/paymentOptions';
 import TRANSACTION_OPTIONS from '@/libs/constant/transactionOptions';
 import toast from 'react-hot-toast';
-import { addTransaction } from '@/libs/indexDB/crudOperations';
+import {
+  addTransaction,
+  updateTransaction,
+} from '@/libs/indexDB/crudOperations';
 import { inputNumericFormatter } from '@/libs/utils/inputFormatter';
 import { CATEGORY_OPTIONS } from '@/libs/constant/expenseOptions';
 import { useState } from 'react';
 import type { AddTransactionPayload } from '@/libs/types/data';
 import { RiSaveFill } from '@remixicon/react';
 import { useModalContext } from 'ram-react-modal';
+import { formatDateTime } from '@/libs/utils/dateFormatter';
 
 type AddTransactionFormState = AddTransactionPayload & {
-  dateCreated: string;
-  timeCreated: string;
+  dateTransaction: string;
+  timeTransaction: string;
 };
 
-export default function AddTransactionForm() {
+type AddTransactionFormProps = Partial<AddTransactionFormState> & {
+  uuid?: string;
+  action?: 'add' | 'update';
+};
+
+export default function TransactionForm({
+  uuid,
+  amount,
+  transactionType,
+  paymentMethod,
+  category,
+  merchant,
+  transactionDate,
+  notes,
+  currency,
+  action = 'add',
+}: AddTransactionFormProps) {
   const { closeModal } = useModalContext();
+  const formattedDate = transactionDate
+    ? formatDateTime(transactionDate)
+    : null;
   const [formData, setFormData] = useState<AddTransactionFormState>({
-    amount: '',
-    transactionType: 'income',
-    paymentMethod: 'cash',
-    category: 'foodAndDrinks',
-    merchant: '',
-    dateCreated: new Date().toISOString().split('T')[0],
-    timeCreated: new Date().toLocaleTimeString('en-US', {
-      hour12: false,
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-    createdAt: '',
-    notes: '',
-    currency: 'PHP',
+    amount: amount || '',
+    transactionType: transactionType || 'income',
+    paymentMethod: paymentMethod || 'cash',
+    category: category || 'foodAndDrinks',
+    merchant: merchant || '',
+    dateTransaction:
+      formattedDate?.date || new Date().toISOString().split('T')[0],
+    timeTransaction:
+      formattedDate?.time ||
+      new Date().toLocaleTimeString('en-US', {
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
+    transactionDate: '',
+    notes: notes || '',
+    currency: currency || 'PHP',
   });
+
+  const isAdd = action === 'add' ? true : false;
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -54,18 +82,30 @@ export default function AddTransactionForm() {
 
   const handleOnSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const { dateCreated, timeCreated, ...rest } = formData;
-    const date = `${dateCreated}T${timeCreated}:00`;
+    const { dateTransaction, timeTransaction, ...rest } = formData;
+    const date = `${dateTransaction}T${timeTransaction}:00`;
 
     const combineDateTimeToISO = new Date(date).toISOString();
 
-    const data = { ...rest, createdAt: combineDateTimeToISO };
+    const data = { ...rest, transactionDate: combineDateTimeToISO };
+
+    const Fn = async () => {
+      switch (action) {
+        case 'add':
+          return await addTransaction(data);
+        case 'update':
+          if (uuid === undefined) return;
+          return await updateTransaction(uuid, data);
+        default:
+          return;
+      }
+    };
+
     try {
-      await toast.promise(addTransaction(data), {
-        loading: 'Adding transaction...',
-        success: 'Transaction added successfully',
-        error: 'Failed to add transaction',
+      await toast.promise(Fn(), {
+        loading: `${isAdd ? 'Adding' : 'Updating'} transaction...`,
+        success: `${isAdd ? 'Added' : 'Updated'} transaction successfully`,
+        error: `${isAdd ? 'Failed to add' : 'Failed to update'} transaction`,
       });
       closeModal();
     } catch (e) {
@@ -77,9 +117,13 @@ export default function AddTransactionForm() {
     <form onSubmit={handleOnSubmit}>
       <div className='w-full px-10 pb-10'>
         <header className='mb-6 text-white'>
-          <h1 className='text-3xl font-bold'>Add Expense</h1>
+          <h1 className='text-3xl font-bold'>
+            {isAdd ? 'Add' : 'Update'} Expense
+          </h1>
           <p className='mt-1 text-gray-500'>
-            Log a new transaction to keep your budget on track
+            {isAdd
+              ? 'Log a new transaction to keep your budget on track'
+              : 'Update the transaction'}
           </p>
         </header>
         <div className='mb-4'>
@@ -143,18 +187,18 @@ export default function AddTransactionForm() {
           <div className='w-full'>
             <Input
               type='date'
-              name='dateCreated'
+              name='dateTransaction'
               onChange={handleInputChange}
-              value={formData.dateCreated}
+              value={formData.dateTransaction}
               label='Date'
             />
           </div>
           <div className='w-full'>
             <Input
               type='time'
-              name='timeCreated'
+              name='timeTransaction'
               onChange={handleInputChange}
-              value={formData.timeCreated}
+              value={formData.timeTransaction}
               label='Time'
             />
           </div>

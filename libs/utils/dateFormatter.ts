@@ -9,4 +9,22 @@ const formatDate = (dateString: string) => {
   }).format(new Date(dateString));
 };
 
-export { formatDate };
+const formatDateTime = (isoString: string) => {
+  const dateObj = new Date(isoString);
+
+  if (isNaN(dateObj.getTime())) {
+    throw new Error('Invalid date string');
+  }
+
+  const date = dateObj.toISOString().split('T')[0];
+
+  const time = dateObj.toLocaleTimeString('en-US', {
+    hour12: false,
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
+  return { date, time };
+};
+
+export { formatDate, formatDateTime };

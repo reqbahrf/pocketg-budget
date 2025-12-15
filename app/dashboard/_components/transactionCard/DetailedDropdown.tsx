@@ -1,6 +1,7 @@
 import type { MininalMainProps } from './MinimalMain';
 import { formatDate } from '@/libs/utils/dateFormatter';
 import Button from '@/components/Button';
+import UpdateTransaction from '@/app/dashboard/_components/modalContent/TransactionForm';
 import { Transaction } from '@/libs/types/data';
 import { useModalContext } from 'ram-react-modal';
 import { useTransactionStore } from '@/libs/stores/transactionStore';
@@ -20,12 +21,26 @@ type DetailedDropdownProps = Omit<
   originalValue: Transaction;
 };
 export default function DetailedDropdown(props: DetailedDropdownProps) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { uuid, notes, updatedAt, originalValue } = props;
   const { openModal, closeModal } = useModalContext();
   const { deleteTransaction } = useTransactionStore();
 
-  const handleEditTransaction = () => {};
+  const handleEditTransaction = () => {
+    openModal({
+      bodyColor: 'dark:bg-brand-dark',
+      size: 'md-f-h',
+      content: (
+        <UpdateTransaction
+          {...originalValue}
+          action='update'
+        />
+      ),
+      onBeforeClosing: {
+        noticeType: 'warn',
+        textContent: 'Are you sure you want to close this modal?',
+      },
+    });
+  };
 
   const handleDeleteTransaction = () => {
     try {

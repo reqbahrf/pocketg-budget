@@ -107,7 +107,7 @@ export default function TransactionForm({
         success: `${isAdd ? 'Added' : 'Updated'} transaction successfully`,
         error: `${isAdd ? 'Failed to add' : 'Failed to update'} transaction`,
       });
-      closeModal();
+      closeModal({isForceClose: true});
     } catch (e) {
       console.error(e);
     }

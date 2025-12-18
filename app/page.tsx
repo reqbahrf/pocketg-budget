@@ -1,6 +1,20 @@
+'use client';
 import Link from 'next/link';
+import { useEffect } from 'react';
 
 export default function Home() {
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('/sw.js')
+        .then((reg) => {
+          console.log('SW registered:', reg.scope);
+        })
+        .catch((err) => {
+          console.error('SW registration failed:', err);
+        });
+    }
+  }, []);
   return (
     <div className='flex min-h-screen items-center justify-center'>
       <main className='flex min-h-screen w-full max-w-3xl flex-col justify-center items-center py-32 px-16 sm:items-start'>

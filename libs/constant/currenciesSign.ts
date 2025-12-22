@@ -54,4 +54,6 @@ export const CURRENCIES_SIGN: Array<{
   { optionName: 'Vietnamese Đồng (₫)', value: 'VND' },
 ];
 
+export type CurrenciesSignValue = (typeof CURRENCIES_SIGN)[number]['value'];
+
 export default CURRENCIES_SIGN;

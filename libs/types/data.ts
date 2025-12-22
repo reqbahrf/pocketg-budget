@@ -1,5 +1,6 @@
-import type { TransactionValue } from '../constant/transactionOptions';
+import type { TransactionValue } from './transaction';
 import type { PaymentValue } from './payment';
+import type { CurrenciesSignValue } from './currency';
 export type UUID = string;
 
 export type TransactionType = TransactionValue;
@@ -12,7 +13,7 @@ export interface Transaction {
   paymentMethod: PaymentValue;
   category: string;
   amount: string;
-  currency: string;
+  currency: CurrenciesSignValue;
   notes?: string | null;
   merchant: string;
   transactionDate: string;

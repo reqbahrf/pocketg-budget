@@ -10,7 +10,7 @@ import {
   updateTransaction,
 } from '@/libs/indexDB/crudOperations';
 import { inputNumericFormatter } from '@/libs/utils/inputFormatter';
-import { CATEGORY_OPTIONS } from '@/libs/constant/expenseOptions';
+import { CATEGORY_OPTIONS } from '@/libs/constant/categoryOptions';
 import { useState } from 'react';
 import type { AddTransactionPayload } from '@/libs/types/data';
 import { RiSaveFill } from '@remixicon/react';

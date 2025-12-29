@@ -10,7 +10,7 @@ import dynamic from 'next/dynamic';
 import { useTransactionStore } from '@/libs/stores/transactionStore';
 import Input from '@/components/Input/Input';
 import Select from '@/components/Input/Select';
-import { CATEGORY_OPTIONS } from '@/libs/constant/expenseOptions';
+import { CATEGORY_OPTIONS } from '@/libs/constant/categoryOptions';
 import PAYMENT_OPTION from '@/libs/constant/paymentOptions';
 const MinimalMain = dynamic(() => import('../transactionCard/MinimalMain'), {
   ssr: false,

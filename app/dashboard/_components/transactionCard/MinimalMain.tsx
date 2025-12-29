@@ -16,7 +16,7 @@ import {
 import {
   CATEGORY_DISPLAY_NAMES,
   CategoryValue,
-} from '@/libs/constant/expenseOptions';
+} from '@/libs/constant/categoryOptions';
 import { formatDate } from '@/libs/utils/dateFormatter';
 import DetailedDropdown from './DetailedDropdown';
 

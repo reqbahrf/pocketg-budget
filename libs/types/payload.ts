@@ -5,7 +5,7 @@ type CategoryTotals = Record<CategoryValue, number>;
 
 type SpentPerCurrency = Record<CurrenciesSignValue, number>;
 type EarnedPerCurrency = Record<CurrenciesSignValue, number>;
-type Recurring = Array<{ merhant: string; avg: number; freq: string }>;
+type Recurring = Array<{ category: string; avg: number; freq: string }>;
 
 type LargeTransactions = Array<{
   date: string;

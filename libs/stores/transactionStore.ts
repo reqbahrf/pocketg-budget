@@ -23,7 +23,9 @@ export const useTransactionStore = create<TransactionState>((set) => ({
   fetchTransactions: async () => {
     set({ loading: true });
     try {
-      const transactions = await getAllTransactions();
+      const transactions = await getAllTransactions().then((res) =>
+        res.filter((item) => item.status === 'active')
+      );
       set({ transactions, loading: false });
     } catch (error) {
       console.error(error);

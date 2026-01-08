@@ -19,6 +19,7 @@ import {
 } from '@/libs/constant/categoryOptions';
 import { formatDate } from '@/libs/utils/dateFormatter';
 import DetailedDropdown from './DetailedDropdown';
+import transactionDisplayFormatter from '@/libs/utils/transactionDisplayFormatter';
 
 export type MininalMainProps = Omit<
   Transaction,
@@ -34,7 +35,7 @@ export default memo(function MinimalMain(props: MininalMainProps) {
     amount,
     transactionType,
     paymentMethod,
-    createdAt,
+    transactionDate,
     category,
     currency,
     active = false,
@@ -64,30 +65,11 @@ export default memo(function MinimalMain(props: MininalMainProps) {
     }
   };
 
-  const amountFormatter = (): string => {
-    const amountWithCurrency = `${currency} ${amount}`;
-    switch (transactionType) {
-      case 'expense':
-        return `- ${amountWithCurrency}`;
-      case 'income':
-        return `+ ${amountWithCurrency}`;
-      case 'saving':
-        return `- ${amountWithCurrency}`;
-      case 'transfer':
-        return `→ ${amountWithCurrency}`;
-      default:
-        return '';
-    }
-  };
-
-  const formattedAmount = amountFormatter();
-  const isIncome = formattedAmount.startsWith('+');
-  const isTransfer = formattedAmount.startsWith('→');
-  const valueColor = isIncome
-    ? 'text-green-400'
-    : isTransfer
-    ? 'text-gray-400'
-    : 'text-red-400';
+  const { formattedAmount, valueColor } = transactionDisplayFormatter(
+    currency,
+    amount,
+    transactionType
+  );
 
   const paymentTypeName = formatPaymentTypeName(paymentMethod);
 
@@ -102,7 +84,7 @@ export default memo(function MinimalMain(props: MininalMainProps) {
         {/* Left Section: Details */}
         <div className='flex flex-col gap-1'>
           {/* Date and Title */}
-          <p className='text-xs text-gray-400'>{formatDate(createdAt)}</p>
+          <p className='text-xs text-gray-400'>{formatDate(transactionDate)}</p>
           <h3 className='font-semibold text-white'>{merchant}</h3>
 
           {/* Category and Payment Type */}

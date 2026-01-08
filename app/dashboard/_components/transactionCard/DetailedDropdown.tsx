@@ -13,15 +13,15 @@ type DetailedDropdownProps = Omit<
   | 'merchant'
   | 'amount'
   | 'transactionType'
+  | 'transactionDate'
   | 'paymentMethod'
-  | 'createdAt'
   | 'category'
   | 'currency'
 > & {
   originalValue: Transaction;
 };
 export default function DetailedDropdown(props: DetailedDropdownProps) {
-  const { uuid, notes, updatedAt, originalValue } = props;
+  const { uuid, notes, updatedAt, createdAt, originalValue } = props;
   const { openModal, closeModal } = useModalContext();
   const { deleteTransaction } = useTransactionStore();
 
@@ -50,7 +50,7 @@ export default function DetailedDropdown(props: DetailedDropdownProps) {
         size: 'sm',
         content: (
           <Delete
-            onCancel={() => closeModal()}
+            onCancel={() => closeModal({})}
             onConfirm={() => {
               toast
                 .promise(deleteTransaction(uuid), {
@@ -58,7 +58,7 @@ export default function DetailedDropdown(props: DetailedDropdownProps) {
                   success: 'Transaction deleted successfully',
                   error: 'Failed to delete transaction',
                 })
-                .then(() => closeModal());
+                .then(() => closeModal({}));
             }}
           >
             <>
@@ -77,7 +77,10 @@ export default function DetailedDropdown(props: DetailedDropdownProps) {
   return (
     <>
       <div className='text-start text-xs text-gray-400 mt-4'>
-        Updated: {formatDate(updatedAt)}
+        Created: {formatDate(createdAt)}
+      </div>
+      <div className='text-start text-xs text-gray-400 mt-2'>
+        Last Updated: {formatDate(updatedAt)}
       </div>
       <div className='flex flex-col items-start mt-4'>
         <div className='w-full md:w-1/2'>

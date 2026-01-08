@@ -4,7 +4,7 @@ import RecentActivityCard from '../RecentActivityCard';
 import { useTransactionStore } from '@/libs/stores/transactionStore';
 
 export const RecentActivity = () => {
-  const { transactions } = useTransactionStore();
+  const { transactions, loading } = useTransactionStore();
 
   const formattedActivities = useMemo(
     () =>
@@ -12,7 +12,8 @@ export const RecentActivity = () => {
         .sort((a, b) => b.transactionDate.localeCompare(a.transactionDate))
         .map((transaction) => ({
           activityName: transaction.merchant,
-          category: transaction.category,
+          currency: transaction.currency,
+          transactionType: transaction.transactionType,
           date: new Date(transaction.transactionDate).toLocaleDateString(
             'en-US',
             {
@@ -20,12 +21,10 @@ export const RecentActivity = () => {
               day: 'numeric',
             }
           ),
-          value: `${transaction.currency} ${transaction.amount}`,
+          amount: transaction.amount,
         })),
     [transactions]
   );
-
-  console.log('Recent Activity Data:', formattedActivities);
 
   return (
     <section className='mb-8'>
@@ -40,7 +39,9 @@ export const RecentActivity = () => {
           </button>
         </div>
         <ol className='flex flex-col justify-center mt-4 gap-2 md:gap-4 px-0 md:px-4 py-0 md:py-2'>
-          {formattedActivities.length === 0 ? (
+          {loading ? (
+            <div className='text-gray-500 text-center py-4'>Loading...</div>
+          ) : formattedActivities.length === 0 ? (
             <div className='text-gray-500 text-center py-4'>
               No recent activity
             </div>

@@ -5,10 +5,7 @@ import CURRENCIES_SIGN from '@/libs/constant/currenciesSign';
 import PAYMENT_OPTION from '@/libs/constant/paymentOptions';
 import TRANSACTION_OPTIONS from '@/libs/constant/transactionOptions';
 import toast from 'react-hot-toast';
-import {
-  addTransaction,
-  updateTransaction,
-} from '@/libs/indexDB/crudOperations';
+import { addTransaction } from '@/libs/indexDB/crudOperations';
 import { inputNumericFormatter } from '@/libs/utils/inputFormatter';
 import { CATEGORY_OPTIONS } from '@/libs/constant/categoryOptions';
 import { useState } from 'react';
@@ -16,6 +13,7 @@ import type { AddTransactionPayload } from '@/libs/types/data';
 import { RiSaveFill } from '@remixicon/react';
 import { useModalContext } from 'ram-react-modal';
 import { formatDateTime } from '@/libs/utils/dateFormatter';
+import { useTransactionStore } from '@/libs/stores/transactionStore';
 
 type AddTransactionFormState = AddTransactionPayload & {
   dateTransaction: string;
@@ -40,6 +38,9 @@ export default function TransactionForm({
   action = 'add',
 }: AddTransactionFormProps) {
   const { closeModal } = useModalContext();
+  const updateTransaction = useTransactionStore(
+    (state) => state.updateTransaction
+  );
   const formattedDate = transactionDate
     ? formatDateTime(transactionDate)
     : null;
@@ -92,10 +93,12 @@ export default function TransactionForm({
     const Fn = async () => {
       switch (action) {
         case 'add':
-          return await addTransaction(data);
+          await addTransaction(data);
+          break;
         case 'update':
           if (uuid === undefined) return;
-          return await updateTransaction(uuid, data);
+          await updateTransaction(uuid, data);
+          break;
         default:
           return;
       }

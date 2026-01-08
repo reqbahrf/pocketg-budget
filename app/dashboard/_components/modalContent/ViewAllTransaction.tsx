@@ -2,7 +2,6 @@ import React, {
   Activity,
   ReactNode,
   useCallback,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -115,7 +114,7 @@ const DateRangePicker = ({
 };
 
 export default function ViewAllTransaction() {
-  const { transactions, loading, fetchTransactions } = useTransactionStore();
+  const { transactions, loading } = useTransactionStore();
   const [currentViewTransaction, setCurrentViewTransaction] = useState<
     string | null
   >(null);

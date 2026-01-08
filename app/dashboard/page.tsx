@@ -12,9 +12,11 @@ import {
 import dynamic from 'next/dynamic';
 import Area from '@/components/skeleton/chart/Area';
 import Donut from '@/components/skeleton/chart/Donut';
-import { ReactNode, useRef } from 'react';
-import RecentActivityCard from './_components/RecentActivityCard';
+import toast from 'react-hot-toast';
+import { ReactNode, useRef, useEffect } from 'react';
+import { RecentActivity } from './_components/section/RecentActivity';
 import { useModalContext } from 'ram-react-modal';
+import { useTransactionStore } from '@/libs/stores/transactionStore';
 const AreaChart = dynamic(() => import('./_components/AreaChart'), {
   ssr: false,
   loading: Area,
@@ -25,8 +27,16 @@ const DonutChart = dynamic(() => import('./_components/DonutChart'), {
 });
 export default function Dashboard() {
   const { openModal } = useModalContext();
+  const { transactions, fetchTransactions } = useTransactionStore();
   const AddTransactionTriggerRef = useRef<HTMLElement>(null);
   const ViewAllTransactionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    fetchTransactions().catch((error) =>
+      toast.error(error || 'Unable to Retrieve Transactions')
+    );
+  }, [fetchTransactions]);
+  console.log('Transactions', transactions);
   const exampleOverviewData = [
     {
       cardTitle: 'Total Spent',
@@ -55,39 +65,6 @@ export default function Dashboard() {
     labels: ['Food & Drink', 'Transportation', 'Entertainment', 'Others'],
     color: ['#d91a1a', '#0066ff', '#ff8c00', '#228b22'],
   };
-
-  const exampleRecentActivity = [
-    {
-      activityName: 'StarBucks',
-      category: 'Food & Drinks',
-      date: 'Oct 29',
-      value: '₱ 400',
-    },
-    {
-      activityName: 'Gas Station',
-      category: 'Transportation',
-      date: 'Oct 25',
-      value: '₱ 30',
-    },
-    {
-      activityName: 'Movie Ticket',
-      category: 'Entertainment',
-      date: 'Oct 24',
-      value: '₱ 50',
-    },
-    {
-      activityName: 'Grocery Shopping',
-      category: 'Food & Drinks',
-      date: 'Oct 22',
-      value: '₱ 100',
-    },
-    {
-      activityName: 'Netflix',
-      category: 'Entertainment',
-      date: 'Oct 21',
-      value: '₱ 190',
-    },
-  ];
 
   const handleOpenAddExpenseModal = () => {
     openModal({
@@ -228,29 +205,7 @@ export default function Dashboard() {
         </div>
       </section>
       {/* Recent Activity Section */}
-      <section className='mb-8'>
-        <div className='w-full bg-second-dark border border-gray-600 rounded-2xl px-4 py-4'>
-          <div className='flex items-center justify-between'>
-            <h2 className='text-xl'>Recent Activity</h2>
-            <button
-              type='button'
-              className='text-brand-primary text-sm  '
-            >
-              View All
-            </button>
-          </div>
-          <ol className='flex flex-col justify-center mt-4 gap-2 md:gap-4  px-0 md:px-4 py-0 md:py-2'>
-            {exampleRecentActivity.map((l, i) => {
-              return (
-                <RecentActivityCard
-                  key={i}
-                  {...l}
-                />
-              );
-            })}
-          </ol>
-        </div>
-      </section>
+      <RecentActivity />
     </div>
   );
 }

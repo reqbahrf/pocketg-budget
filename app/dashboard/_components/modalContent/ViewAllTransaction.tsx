@@ -26,7 +26,6 @@ import {
   RiArrowDownSLine,
   RiSortDesc,
 } from '@remixicon/react';
-import toast from 'react-hot-toast';
 
 type FilterControlProps = {
   icon: React.ElementType;
@@ -196,12 +195,6 @@ export default function ViewAllTransaction() {
 
     return filtered;
   }, [transactionFilter, transactions]);
-
-  useEffect(() => {
-    fetchTransactions().catch((error) =>
-      toast.error(error || 'Unable to Retrieve Transactions')
-    );
-  }, [fetchTransactions]);
 
   const handleViewTransaction = useCallback((uuid: string) => {
     setCurrentViewTransaction((prevId) => (prevId === uuid ? null : uuid));

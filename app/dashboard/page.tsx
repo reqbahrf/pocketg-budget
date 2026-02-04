@@ -17,6 +17,11 @@ import { ReactNode, useRef, useEffect } from 'react';
 import { RecentActivity } from './_components/section/RecentActivity';
 import { useModalContext } from 'ram-react-modal';
 import { useTransactionStore } from '@/libs/stores/transactionStore';
+import {
+  categoryColorMap,
+  CATEGORY_DISPLAY_NAMES,
+} from '@/libs/constant/categoryOptions';
+import type { DonutData } from '@/libs/types/dashboardCharts';
 const AreaChart = dynamic(() => import('./_components/AreaChart'), {
   ssr: false,
   loading: Area,
@@ -33,10 +38,9 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchTransactions().catch((error) =>
-      toast.error(error || 'Unable to Retrieve Transactions')
+      toast.error(error || 'Unable to Retrieve Transactions'),
     );
   }, [fetchTransactions]);
-  console.log('Transactions', transactions);
   const exampleOverviewData = [
     {
       cardTitle: 'Total Spent',
@@ -56,15 +60,31 @@ export default function Dashboard() {
     },
   ];
 
+  const donutData = (): DonutData => {
+    const categoryMap = new Map<string, number>();
+
+    for (const transaction of transactions) {
+      const existing = categoryMap.get(transaction.category) || 0;
+      categoryMap.set(
+        transaction.category,
+        existing + parseFloat(transaction.amount),
+      );
+    }
+
+    return {
+      series: Array.from(categoryMap.values()),
+      labels: Array.from(categoryMap.keys()).map(
+        (category) => CATEGORY_DISPLAY_NAMES[category] || category,
+      ),
+      color: Array.from(categoryMap.keys()).map(
+        (category) => categoryColorMap[category] || '#95a5a6',
+      ),
+    };
+  };
+
   const exampleChartData = [
     80, 45, 100, 180, 49, 80, 60, 30, 30, 70, 38, 50, 23, 23,
   ];
-
-  const exampleDonutData = {
-    series: [41, 25, 16, 18],
-    labels: ['Food & Drink', 'Transportation', 'Entertainment', 'Others'],
-    color: ['#d91a1a', '#0066ff', '#ff8c00', '#228b22'],
-  };
 
   const handleOpenAddExpenseModal = () => {
     openModal({
@@ -168,7 +188,7 @@ export default function Dashboard() {
           theme='dark'
         />
         <DonutChart
-          {...exampleDonutData}
+          {...donutData()}
           theme='dark'
         />
       </section>

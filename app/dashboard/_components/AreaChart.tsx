@@ -1,6 +1,7 @@
 'use client';
 import Chart from 'react-apexcharts';
 import { useMemo, useState, memo } from 'react';
+import { formatAmount } from '@/libs/utils/amountFormatter';
 import type { ApexOptions } from 'apexcharts';
 interface AreaChartProps {
   series: number[];
@@ -81,8 +82,8 @@ const AreaChart = ({ series, theme }: AreaChartProps) => {
             show: false,
           },
         },
-      } as ApexOptions),
-    [chartData]
+      }) as ApexOptions,
+    [chartData],
   );
 
   const totalDailySpending = useMemo(() => {
@@ -93,7 +94,7 @@ const AreaChart = ({ series, theme }: AreaChartProps) => {
     <div className='md:w-1/2 w-full bg-second-dark border border-gray-600 rounded-2xl px-4 py-4'>
       <div className='text-sm mb-1 font-normal'>Daily Spend (Last 14 Days)</div>
       <div className='text-2xl font-bold'>
-        ₱ {totalDailySpending.toFixed(2)}{' '}
+        ₱ {formatAmount(totalDailySpending)}{' '}
         <span className='text-xs text-gray-500'>Last 14 Days</span>
       </div>
       <Chart

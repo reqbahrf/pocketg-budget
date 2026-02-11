@@ -3,6 +3,7 @@ import OverviewCard from './_components/OverviewCard';
 import AddExpenseForm from './_components/modalContent/TransactionForm';
 import ViewAllTransaction from './_components/modalContent/ViewAllTransaction';
 import Button from '@/components/Button';
+import { parseFormattedAmount } from '@/libs/utils/amountFormatter';
 import {
   RiSparklingFill,
   RiAddLine,
@@ -82,9 +83,34 @@ export default function Dashboard() {
     };
   };
 
-  const exampleChartData = [
-    80, 45, 100, 180, 49, 80, 60, 30, 30, 70, 38, 50, 23, 23,
-  ];
+  const areaChart = (): Array<number> => {
+    const dailyExpenses = new Map<string, number>();
+    const today = new Date();
+
+    for (let i = 13; i >= 0; i--) {
+      const date = new Date(today);
+      date.setDate(date.getDate() - i);
+      const dateStr = date.toISOString().split('T')[0];
+      dailyExpenses.set(dateStr, 0);
+    }
+
+    for (const transaction of transactions) {
+      if (transaction.transactionType === 'expense') {
+        const transactionDate = new Date(transaction.transactionDate)
+          .toISOString()
+          .split('T')[0];
+
+        if (dailyExpenses.has(transactionDate)) {
+          const currentAmount = dailyExpenses.get(transactionDate) || 0;
+          dailyExpenses.set(
+            transactionDate,
+            currentAmount + parseFormattedAmount(transaction.amount),
+          );
+        }
+      }
+    }
+    return Array.from(dailyExpenses.values());
+  };
 
   const handleOpenAddExpenseModal = () => {
     openModal({
@@ -184,7 +210,7 @@ export default function Dashboard() {
       {/* Chart Section */}
       <section className='flex md:flex-row flex-col w-full gap-2 md:gap-4'>
         <AreaChart
-          series={exampleChartData}
+          series={areaChart()}
           theme='dark'
         />
         <DonutChart

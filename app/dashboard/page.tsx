@@ -42,24 +42,67 @@ export default function Dashboard() {
       toast.error(error || 'Unable to Retrieve Transactions'),
     );
   }, [fetchTransactions]);
-  const exampleOverviewData = [
-    {
-      cardTitle: 'Total Spent',
-      cardValue: '₱500.00',
-    },
-    {
-      cardTitle: 'Budget Remaining',
-      cardValue: '₱500.00',
-    },
-    {
-      cardTitle: 'Daily Average',
-      cardValue: '₱70',
-    },
-    {
-      cardTitle: 'Top Category',
-      cardValue: 'Food & Drink',
-    },
-  ];
+  const calculateOverviewData = () => {
+    // Filter only expense transactions
+    const expenseTransactions = transactions.filter(
+      (t) => t.transactionType === 'expense',
+    );
+
+    // Calculate Total Spent
+    const totalSpent = expenseTransactions.reduce(
+      (sum, t) => sum + parseFormattedAmount(t.amount),
+      0,
+    );
+
+    // Calculate Daily Average (based on last 30 days)
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+    const recentExpenses = expenseTransactions.filter(
+      (t) => new Date(t.transactionDate) >= thirtyDaysAgo,
+    );
+
+    const dailyAverage =
+      recentExpenses.length > 0
+        ? recentExpenses.reduce(
+            (sum, t) => sum + parseFormattedAmount(t.amount),
+            0,
+          ) / 30
+        : 0;
+
+    // Find Top Category
+    const categoryTotals = new Map<string, number>();
+    expenseTransactions.forEach((t) => {
+      const current = categoryTotals.get(t.category) || 0;
+      categoryTotals.set(t.category, current + parseFormattedAmount(t.amount));
+    });
+
+    const topCategory =
+      categoryTotals.size > 0
+        ? Array.from(categoryTotals.entries()).sort((a, b) => b[1] - a[1])[0]
+        : null;
+
+    return [
+      {
+        cardTitle: 'Total Spent',
+        cardValue: `₱${totalSpent.toFixed(2)}`,
+      },
+      {
+        cardTitle: 'Budget Remaining',
+        cardValue: '₱0.00', // Placeholder as requested
+      },
+      {
+        cardTitle: 'Daily Average',
+        cardValue: `₱${dailyAverage.toFixed(0)}`,
+      },
+      {
+        cardTitle: 'Top Category',
+        cardValue: topCategory
+          ? CATEGORY_DISPLAY_NAMES[topCategory[0]] || topCategory[0]
+          : 'N/A',
+      },
+    ];
+  };
 
   const donutData = (): DonutData => {
     const categoryMap = new Map<string, number>();
@@ -200,7 +243,7 @@ export default function Dashboard() {
       </div>
       {/* Overview Section*/}
       <section className='flex flex-col my-4 md:my-8 md:flex-row justify-center gap-2 md:gap-4'>
-        {exampleOverviewData.map((t, i) => (
+        {calculateOverviewData().map((t, i) => (
           <OverviewCard
             key={i}
             {...t}
